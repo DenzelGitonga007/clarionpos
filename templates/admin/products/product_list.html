@@ -1,0 +1,77 @@
+{% extends 'common/base.html' %}
+{% block title %}Products{% endblock %}
+{% block content %}
+  <!-- To display the messages -->
+  <!-- The messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+
+  <!-- To let the message disappear after a few seconds -->
+  <script>
+      setTimeout(function() {
+          $('.alert').fadeOut('slow');
+      }, 3000);
+  </script>
+
+
+
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>Product List</h2>
+        <div>
+          <a class="btn btn-secondary rounded mr-2" href="{% url 'admin_dashboard:dashboard' %}">
+            <i class="fa fa-chevron-left mr-1"></i>Back to Dashboard
+          </a>
+          <a class="btn btn-success rounded" href="{% url 'inventory:product_create' %}" style="margin-left: 10px;">
+            <i class="fa fa-plus mr-2" style="font-size: 20px;"></i>Add Product
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Pieces Per Carton</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+            <tr>
+              <td>{{ product.name }}</td>
+              <td>{{ product.category }}</td>
+              <td>{{ product.price }}</td>
+              <td>{{ product.pieces_per_carton }}</td>
+              <td>
+                <div class="btn-group">
+                  <a class="btn btn-primary mr-2 rounded" href="{% url 'inventory:product_detail' pk=product.pk %}">Detail</a>
+                  <a class="btn btn-warning mr-2 rounded" href="{% url 'inventory:product_update' pk=product.pk %}">Update</a>
+                  <a class="btn btn-danger mr-2 rounded" href="{% url 'inventory:product_delete' pk=product.pk %}">Delete</a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

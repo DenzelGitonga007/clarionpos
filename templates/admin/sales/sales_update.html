@@ -1,0 +1,73 @@
+{% extends 'common/base.html' %}
+{% block title %}Update Product | Clarion Point of Sale System {% endblock %}
+{% block content %}
+  <!-- To display the messages -->
+  <!-- The messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+
+  <!-- To let the message disappear after a few seconds -->
+  <script>
+      setTimeout(function() {
+          $('.alert').fadeOut('slow');
+      }, 3000);
+  </script>
+
+<div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h3>Edit sale by {{ sale.sold_by.username }} in {{ store.name }}</h3>
+      </div>
+      <div class="card-body">
+        <form method="POST">
+          {% csrf_token %}
+            <!-- Customer -->
+            <div class="form-group">
+                <label for="customer">Customer</label>
+                <select class="form-control" id="id_customer" name="customer" required>
+                <option value="">Select a customer</option>
+                {% for customer in customers %}
+                    <option value="{{ customer.id }}" {% if sale.customer == customer.id %}selected{% endif %}>{{ customer.name }}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <!-- End of customer -->
+            <!-- Total amount -->
+          <div class="form-group">
+            <label for="quantity">Total Amount</label>
+            <input type="number" class="form-control" id="id_total_amount" name="total_amount" value="{{ sale.total_amount }}" required>
+          </div>
+          <!-- End of total amount -->
+          <!-- Rendered amount -->
+          <div class="form-group">
+            <label for="quantity">Rendered Amount</label>
+            <input type="number" class="form-control" id="id_rendered_amount" name="rendered_amount" value="{{ sale.rendered_amount }}" required>
+          </div>
+          <!-- End of rendered amount -->
+          <!-- Balance -->
+          <div class="form-group">
+            <label for="quantity">Balance</label>
+            <input type="number" class="form-control" id="id_balance" name="balance" value="{{ sale.balance }}" required>
+          </div>
+          <!-- End of balance -->
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <a class="btn btn-secondary" href="{% url 'admin_dashboard:sale_detail' store.id sale.id %}">Cancel</a>
+          <a class="btn btn-warning" href="{% url 'admin_dashboard:sales_list' store.id %}">Back to Store Stock</a>
+        </form>
+      </div>
+    </div>
+</div>
+  
+
+
+
+{% endblock %}

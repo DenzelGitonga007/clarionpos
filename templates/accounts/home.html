@@ -1,0 +1,45 @@
+{% extends 'common/base.html' %}
+
+{% block title %}Clarion Point of Sale System{% endblock %}
+
+{% block content %}
+  <!-- To display the messages -->
+  <!-- The messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+
+  <!-- To let the message disappear after a few seconds -->
+  <script>
+      setTimeout(function() {
+          $('.alert').fadeOut('slow');
+      }, 3000);
+  </script>
+  <!-- Content -->
+  <!-- Top jumbotron -->
+  <div class="jumbotron jumbotron-fluid bg-green">
+    <div class="container text-center">
+      <h1 class="display-4">Welcome to Clarion Point of Sale System</h1>
+      <p class="lead">A quick and easy experience with stock management and making sales</p>
+      {% if user.is_authenticated %}
+        {% if user.is_superuser %}
+          <a class="btn btn-outline-info btn-lg mx-2" href="{% url 'admin_dashboard:dashboard' %}" role="button">View Dashboard</a>
+        {% else %}
+        <a class="btn btn-outline-info btn-lg mx-2" href="{% url 'sales:sales' %}" role="button">Make Sales</a>
+        <a class="btn btn-outline-warning btn-lg mx-2" href="{% url 'stock_transfer:stock_transfer' %}" role="button">Stock Transfer</a>
+        {% endif %}
+        
+      {% else %}
+        <a class="btn btn-outline-info btn-lg btn-block" href="{% url 'accounts:login' %}" role="button">Login</a>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

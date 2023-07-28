@@ -1,0 +1,283 @@
+{% extends 'common/base.html' %}
+{% block title %}  Admin Dashboard | Clarion Point of Sale System {% endblock %}
+
+{% block content %}
+  <!-- To display the messages -->
+  <!-- The messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- To let the message disappear after a few seconds -->
+  <script>
+      setTimeout(function() {
+          $('.alert').fadeOut('slow');
+      }, 3000);
+  </script>
+
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Left dashboard -->
+      <div class="col-md-3">
+        <div class="sidebar-modal">
+          <div class="modal-dialog modal-dialog-vertical" role="document">
+            <div class="modal-content bg-primary">
+              <!-- Header -->
+              <div class="modal-header">
+                <h5 class="modal-title text-white">Menu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <!-- End of header -->
+              <div class="modal-body" style="height: px; overflow-y: scroll;">
+                <!-- Users -->
+                <div class="card">
+                  <div class="card-header">
+                    <div class="dropdown">
+                      <h6 class="card-title dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Users <span class="dropdown-caret"></span>
+                      </h6>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item btn btn-primary btn-sm" href="{% url 'inventory:user_list' %}">View All Users</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End of Users -->
+                <hr>
+                <!-- Inventory -->
+                <div class="card">
+                  <div class="card-header">
+                    <div class="dropdown">
+                      <h6 class="card-title dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Inventory <span class="dropdown-caret"></span>
+                      </h6>
+                      <!-- Dropdowns -->
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item btn btn-primary btn-sm" href="{% url 'inventory:store_list' %}">Stores</a>
+                        <a class="dropdown-item btn btn-primary btn-sm" href="{% url 'inventory:product_list' %}">Products</a>
+                        <a class="dropdown-item btn btn-primary btn-sm" href="{% url 'inventory:category_list' %}">Categories</a>
+                        <a class="dropdown-item btn btn-primary btn-sm" href="{% url 'inventory:store_stock' %}">Stock</a>
+                      </div>
+                      <!-- End of dropdowns -->
+                    </div>
+                  </div>
+                </div>
+                <!-- End of inventory -->
+                <hr>
+                <!-- Sales -->
+                <div class="card">
+                  <div class="card-header">
+                    <div class="dropdown">
+                      <h6 class="card-title dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sales <span class="dropdown-caret"></span>
+                      </h6>
+                      <!-- Dropdowns -->
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item btn btn-primary btn-sm" href="{% url 'admin_dashboard:select_sale_store' %}">View Sales</a>
+                      </div>
+                      <!-- End of dropdowns -->
+                    </div>
+                  </div>
+                </div>
+                <!-- End of inventory -->
+                <hr>
+                <!-- Additional menu sections -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- End of left dashboard --> 
+
+
+      <!-- Center dashboard -->
+      <div class="col-md-9">
+        <div class="dashboard-center">
+          <h3 class="card-title">Admin Dashboard</h3>
+            <!-- Cards -->
+            <div class="row">
+              <!-- Sales Card -->
+              <div class="col-lg-4 mb-4">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Sales</h5>
+                    <p class="card-text">View sales for each store</p>
+                    <a href="{% url 'admin_dashboard:select_sale_store' %}" class="btn btn-primary">Click here</a>
+                  </div>
+                </div>
+              </div>
+              <!-- End of sales card -->
+              <!-- Stock Card -->
+              <div class="col-lg-4 mb-4">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Stock</h5>
+                    <p class="card-text">Stock content goes here</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                  </div>
+                </div>
+              </div>
+              <!-- End of stock card -->
+
+              <!-- Debtors Card -->
+              <div class="col-lg-4 mb-4">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Debtors</h5>
+                    <p class="card-text">Debtors content goes here</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                  </div>
+                </div>
+              </div>
+              <!-- End of debtors card -->
+            </div>
+            <!-- End of Cards -->
+          <hr><br>
+          <!-- Toggle button and header -->
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Analysis Section</h5 >
+            <div class="toggle-button">
+              <button id="toggle-button" class="btn btn-outline-warning" data-state="products">View Sales</button>
+            </div>
+          </div>
+
+          <!-- Chart container with card styling -->
+          <div class="card mt-4">
+            <div class="card-header" id="chart-header-text">
+              Products Analysis Chart
+            </div>
+            <div class="card-body">
+              <div class="chart-wrapper">
+                <canvas id="combined-chart"></canvas>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- End of center dashboard -->
+      
+    </div>
+    <!-- End of row -->
+
+  </div>
+
+<!-- JavaScript -->
+<script>
+  // Get the sales canvas element
+
+  // Define your sales data
+  var salesData = {{ sales_data|safe }};
+
+  // Define your product data
+  var productData = {
+    labels: {{ product_labels|safe }},
+    datasets: [
+      {
+        label: 'quantity',
+        data: {{ product_quantities|safe }},
+       
+      }
+    ]
+  };
+
+  // Get the combined chart canvas element
+  var combinedChartCanvas = document.getElementById('combined-chart').getContext('2d');
+
+  // Define initial data for the chart
+  var initialData = productData;
+
+  // Create the initial chart
+  var combinedChart = new Chart(combinedChartCanvas, {
+    type: 'doughnut',  // Set the initial chart type to pie
+    data: initialData,
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+        },
+        datalabels: {
+          display: true,
+          color: 'white',
+          font: {
+            weight: 'bold'
+          },
+          formatter: function(value, context) {
+            return context.chart.data.labels[context.dataIndex];
+          }
+        }
+      }
+    }
+  });
+
+  // Function to update the chart data
+  function updateChart() {
+    // Check the current state of the toggle button
+    var currentState = toggleButton.getAttribute('data-state');
+
+    if (currentState === 'products') {
+      // Switch to sales data and line chart type
+      combinedChart.data = salesData;
+      combinedChart.config.type = 'bar';
+      toggleButton.textContent = 'View Products';
+      chartHeader = document.getElementById('chart-header-text')
+      chartHeader.textContent = 'Sales Analysis Chart'
+      toggleButton.setAttribute('data-state', 'sales');
+    } else {
+      // Switch to product data and pie chart type
+      combinedChart.data = productData;
+      combinedChart.config.type = 'doughnut';
+      combinedChart.options = {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+            },
+            datalabels: {
+              display: true,
+              color: 'white',
+              font: {
+                weight: 'bold'
+              },
+              formatter: function(value, context) {
+                return context.chart.data.labels[context.dataIndex];
+              }
+            }
+          }
+        }
+      toggleButton.textContent = 'View Sales';
+      chartHeader = document.getElementById('chart-header-text')
+      chartHeader.textContent = 'Products Analysis Chart'
+      toggleButton.setAttribute('data-state', 'products');
+    }
+
+    // Update the chart
+    combinedChart.update();
+  }
+
+  // Toggle button event listener
+  var toggleButton = document.getElementById('toggle-button');
+  toggleButton.addEventListener('click', updateChart);
+
+
+</script>
+<!-- End of JavaScript -->
+
+
+{% endblock %}

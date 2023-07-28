@@ -1,0 +1,56 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- The title of each file -->
+    <title>{% block title %}{% endblock %}</title>
+    <!-- For the bootstrap -->
+    <!--    Link the bootstrap-->
+    <script src="{% static 'bootstrap/js/jquery-3.4.0.js' %}"></script>
+    <script src="{% static 'bootstrap/js/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    
+    <!-- jquery -->
+    <script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/jquery-3' %}"></script>
+    
+    <!-- Chart representation -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'custom_css/styles.css' %}">
+    <!-- Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/logos/clarion_favicon.ico' %}">
+
+
+</head>
+<body>
+    <!-- The header, includes the header.html -->
+    <header>
+      {% include 'common/header.html' %}  
+      
+    </header>
+    <br>
+    <!-- The main body or content of the other htmls -->
+    <main class="site-main main"> <!--  added site-main -->
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+    <br>
+    <!-- The footer -->
+    <footer>
+        <!-- Footer content -->
+        {% include 'common/footer.html' %}
+    </footer>
+
+</body>
+</html>

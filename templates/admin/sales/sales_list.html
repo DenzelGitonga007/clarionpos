@@ -1,0 +1,90 @@
+
+{% extends 'common/base.html' %}
+{% block title %} Stock | Clarion Point of Sale System {% endblock %}
+{% block content %}
+  <!-- To display the messages -->
+  <!-- The messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+
+  <!-- To let the message disappear after a few seconds -->
+  <script>
+      setTimeout(function() {
+          $('.alert').fadeOut('slow');
+      }, 3000);
+  </script>
+<!-- End of message script -->
+
+
+<div class="container">
+  <div class="card">
+    <!-- Header -->
+    <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <h3>Sales in {{ store.name }}</h3>
+        <h5>Total Sales: {{ total_sale }}</h5>
+        <div>
+          <a class="btn btn-secondary rounded mr-2" href="{% url 'admin_dashboard:select_sale_store' %}">
+            <i class="fa fa-chevron-left mr-1"></i>Back to Select Sale Store list
+          </a>
+          <!-- Admin not make sale -->
+          <!-- <a class="btn btn-success rounded" href="" style="margin-left: 10px;">
+            <i class="fa fa-plus mr-2" style="font-size: 20px;"></i>Add Sale
+          </a> -->
+          <!-- End of admin not make sale -->
+        </div>
+      </div>
+    </div>
+    <!-- End of header     -->
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="thead-light">
+            <tr>
+                <th>Sold By</th>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Total Amount</th>
+                <th>Rendered Amount</th>
+                <th>Balance</th>
+                <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for sale in sales %}
+            <tr>
+              <td>{{ sale.sold_by.username }}</td>
+              <td>{{ sale.date }}</td>
+              <td>{{ sale.customer }}</td>
+              <td>{{ sale.total_amount }}</td>
+              <td>{{ sale.rendered_amount }}</td>
+              <td>{{ sale.balance }}</td>
+              <td>
+                <div class="btn-group">
+                  <a class="btn btn-primary mr-2 rounded" href="{% url 'admin_dashboard:sale_detail' store.id sale.id %}">Detail</a>
+                   <a class="btn btn-warning mr-2 rounded" href="{% url 'admin_dashboard:sale_update' store.id sale.id %}">Update</a>
+                   <a class="btn btn-danger mr-2 rounded" href="{% url 'admin_dashboard:sale_delete' store.id sale.id %}">Delete</a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+            
+             
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+

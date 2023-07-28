@@ -1,0 +1,84 @@
+{% extends 'common/base.html' %}
+{% block title %}Users | Clarion POS {% endblock %}
+{% block content %}
+  <!-- To display the messages -->
+  <!-- The messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+
+  <!-- To let the message disappear after a few seconds -->
+  <script>
+      setTimeout(function() {
+          $('.alert').fadeOut('slow');
+      }, 3000);
+  </script>
+
+  
+  <div class="container">
+    <div class="card">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h2>User List</h2>
+            <div>
+              <a class="btn btn-secondary rounded mr-2" href="{% url 'admin_dashboard:dashboard' %}">
+                <i class="fa fa-chevron-left mr-1"></i>Back to Dashboard
+              </a>
+              <a class="btn btn-success rounded" href="{% url 'inventory:user_create' %}" style="margin-left: 10px;">
+                <i class="fa fa-plus mr-2" style="font-size: 20px;"></i>Add User
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Store</th>
+                            <th>Phone Number</th>
+                            <th>Admin</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.store }}</td>
+                            <td>{{ user.phone_number }}</td>
+                            <td>
+                                {% if user.is_superuser %}
+                                <i class="fa fa-check text-success"></i>
+                                {% else %}
+                                <i class="fa fa-times text-danger"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                              <div class="btn-group">
+                                  <a class="btn btn-primary mr-2 rounded" href="{% url 'inventory:user_detail' pk=user.id %}">Detail</a>
+                                  <a class="btn btn-warning mr-2 rounded" href="{% url 'inventory:user_update' pk=user.id %}">Update</a>
+                                  <a class="btn btn-danger mr-2 rounded" href="{% url 'inventory:user_delete' pk=user.id %}">Delete</a>
+                              </div>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

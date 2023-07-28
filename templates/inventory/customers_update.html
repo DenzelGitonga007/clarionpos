@@ -1,0 +1,66 @@
+{% extends 'common/base.html' %}
+{% block title %}Update User{% endblock %}
+{% block content %}
+  <!-- To display the messages -->
+  {% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endfor %}
+{% endif %}
+
+ <!-- To let the message disappear after a few seconds -->
+ <script>
+    setTimeout(function() {
+        $('.alert').fadeOut('slow');
+    }, 3000);
+</script>
+
+
+<div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h2>Update Customer Details</h2>
+      </div>
+      <!-- Form body -->
+      <div class="card-body">
+        <!-- Actual form -->
+        <form method="POST" action="">
+          {% csrf_token %}
+          <!-- Name -->
+          <div class="form-group">
+            <label for="username">Name:</label>
+            <input type="text" class="form-control" id="id_name" name="name" value="{{ form.name.value }}" required>
+          </div>
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ form.email.value }}" required>
+          </div>        
+          <!-- Phone number -->
+          <div class="form-group">
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" class="form-control" id="id_phone_number" name="phone_number" value="{{ form.phone_number.value }}">
+          </div>
+            <!-- Address        -->
+          <div class="form-group">
+            <label for="full_name">Address:</label>
+            <input type="text" class="form-control" id="id_address" name="address" value="{{ form.address.value }}">
+          </div>
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-primary">Update</button>
+          <a href="{% url 'inventory:customers_detail' form.instance.id %}" class="btn btn-secondary">Cancel</a>
+        </form>
+        <!-- End of actual form -->
+      </div>
+      <!-- End of form body -->
+    </div>
+  </div>
+  
+
+
+{% endblock %}

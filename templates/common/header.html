@@ -1,0 +1,97 @@
+{% load static %}
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <!-- Admin -->
+        {% if user.is_authenticated and user.is_superuser %}
+          <a class="navbar-brand col-md-2" href="{% url 'admin_dashboard:dashboard' %}">
+              <!-- Logo -->
+              <img src="{% static 'images/logos/clarion_logo.svg' %}" alt="Logo" height="40" class="mr-2 rounded">
+              Clarion Point of Sale System
+          </a>
+        {% else %}
+        <!-- Normal user -->
+          <a class="navbar-brand col-md-2" href="{% url 'accounts:home' %}">
+            <!-- Logo -->
+            <img src="{% static 'images/logos/clarion_logo.svg' %}" alt="Logo" height="40" class="mr-2 rounded">
+            Clarion Point of Sale System
+          </a>
+        {% endif %}
+          <button class="navbar-toggler col-md-2" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-between col-md-8" id="navbarNav">
+            <!-- After login -->
+            {% if user.is_authenticated %}
+              {% if user.is_superuser %}
+                <!-- Mid section -->
+                <!-- Links -->
+                <!-- Products -->
+                <ul class="navbar-nav">
+                <!-- Products -->
+                <!-- End of Products -->
+
+                <!-- Stores -->
+                <!-- End of Stores -->
+
+                <!-- Customers -->
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'inventory:customers_list' %}">Customers</a>
+                </li>
+                <!-- End of Customers -->
+                
+                <!-- Sales -->
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'sales:sales_list' %}">Sales</a>
+                </li>
+                <!-- End of Sales -->
+
+                <!-- Stock -->
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'inventory:store_stock' %}">Stock</a>
+                </li>
+                <!-- End of Sales -->
+                <!-- End of mid section -->
+                </ul>
+                <!-- Display welcome message and logout link for superuser -->
+                <ul class="navbar-nav ml-auto">
+                  <!-- Welcome -->
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                      Welcome, {{ user.username }}
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+                  </li>
+                </ul>
+              {% else %}
+              <!-- Normal user -->
+              <!-- Mid section -->
+              <ul class="navbar-nav">
+                <!-- Customers -->
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'inventory:customers_list' %}">Customers</a>
+                </li>
+                <!-- End of Customers -->
+              </ul> 
+              <!-- End of mid section -->
+              <!-- Right section -->
+                <ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                      Welcome, {{ user.username }}
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+                  </li>
+                </ul>
+              <!-- End of right section -->
+              {% endif %}
+            {% endif %}
+          </div>
+      </div>
+  </nav>
+</header>

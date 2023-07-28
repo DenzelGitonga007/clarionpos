@@ -1,0 +1,46 @@
+{% extends 'common/base.html' %}
+{% block title %}View Product{% endblock %}
+{% block content %}
+  <!-- To display the messages -->
+  <!-- The messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+
+  <!-- To let the message disappear after a few seconds -->
+  <script>
+      setTimeout(function() {
+          $('.alert').fadeOut('slow');
+      }, 3000);
+  </script>
+
+<div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h2>Product Details</h2>
+      </div>
+      <div class="card-body">
+        <h4>Name: {{ product.name }}</h4>
+        <p>Quantity: {{ product.quantity }}</p>
+        <p>Price: Kes {{ product.price }}</p>
+        <p>Category: {{ product.category.name }}</p>
+        
+      </div>
+      <div class="card-footer">
+        <a class="btn btn-primary" href="{% url 'inventory:product_update' pk=product.pk %}">Edit</a>
+        <a class="btn btn-danger" href="{% url 'inventory:product_delete' pk=product.pk %}">Delete</a>
+        <a class="btn btn-secondary" href="{% url 'inventory:product_list' %}">Back to Product List</a>
+      </div>
+    </div>
+</div>
+  
+
+{% endblock %}

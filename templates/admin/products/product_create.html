@@ -1,0 +1,44 @@
+{% extends 'common/base.html' %}
+{% block title %}Create Product{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h2>Create Product</h2>
+    </div>
+    <div class="card-body">
+      <form method="POST" action="{% url 'inventory:product_create' %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Enter product name" required>
+        </div>        
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="number" class="form-control" id="price" name="price" placeholder="Enter product price" required>
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select class="form-control" id="category" name="category" required>
+            <option value="" disabled selected>Select a category</option>
+            <!-- Add category options dynamically -->
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label for="quantity">Pieces Per Carton</label>
+            <input type="number" class="form-control" id="id_pieces_per_carton" name="pieces_per_carton" placeholder="How many pieces per carton" required>
+          </div>
+        </div>
+        <!-- Add other fields for creating a product here -->
+        <button type="submit" class="btn btn-primary">Create</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

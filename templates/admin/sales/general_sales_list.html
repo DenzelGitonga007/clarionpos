@@ -1,0 +1,159 @@
+{% extends 'common/base.html' %}
+{% block title %} Sales List | Admin Dashboard | Clarion Point of Sale System {% endblock %}
+{% block content %}
+  <!-- To display the messages -->
+  <!-- The messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+
+  <!-- To let the message disappear after a few seconds -->
+  <script>
+      setTimeout(function() {
+          $('.alert').fadeOut('slow');
+      }, 3000);
+  </script>
+
+
+<div class="container">
+  <div class="card">
+    <!-- Header -->
+    <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h3>Sales List</h3>
+        </div>
+        <!-- Action bar -->
+        <div class="btn-group">
+          <button id="action-dropdown" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Actions
+          </button>
+          <div class="dropdown-menu" aria-labelledby="action-dropdown">
+            <a class="dropdown-item" href="javascript:void(0);" onclick="deleteSelectedSales();">Delete selected</a>
+          </div>
+        </div>
+
+        <!-- Total sales -->
+        <div class="ml-3">
+          <h5>Total Sales: {{ total_sale }}</h5>
+        </div>
+        <!-- End of total sales -->
+
+        <!-- Filter -->
+        <div class="d-flex align-items-center">
+          <!-- Filter form -->
+          <!-- <form class="form-inline mr-2">
+            <div class="form-group mb-2">
+              <label for="fromDate" class="mr-2">From:</label>
+              <input type="date" class="form-control" id="fromDate" name="from_date" value="{{ request.GET.from_date }}">
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+              <label for="toDate" class="mr-2">To:</label>
+              <input type="date" class="form-control" id="toDate" name="to_date" value="{{ request.GET.to_date }}">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Filter</button>
+          </form> -->
+          <!-- End of filter form -->
+        
+          <a class="btn btn-secondary rounded ml-2" href="{% url 'admin_dashboard:dashboard' %}">
+            <i class="fa fa-chevron-left mr-1"></i>Back to Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- End of header -->
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="thead-light">
+            <tr>
+              <th><input type="checkbox" id="select-all-checkbox"></th> <!-- Add the "Select All" checkbox -->
+              <th>Sold by</th>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Total Amount</th>
+              <th>Rendered Amount</th>
+              <th>Balance</th>
+              <!-- <th>Actions</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            {% for sale in sales %}
+            <tr>
+              <td><input type="checkbox" name="selected_sales" value="{{ sale.id }}"></td> <!-- Add the checkbox -->
+              <td>{{ sale.sold_by.username }}</td>
+              <td>{{ sale.date }}</td>
+              <td>{{ sale.customer }}</td>
+              <td>{{ sale.total_amount }}</td>
+              <td>{{ sale.rendered_amount }}</td>
+              <td>{{ sale.balance }}</td>
+              <!-- <td>
+                <div class="btn-group">
+                  <a class="btn btn-primary mr-2 rounded" href="">Detail</a>
+                  <a class="btn btn-warning mr-2 rounded" href="">Update</a>
+                  <a class="btn btn-danger mr-2 rounded" href="">Delete</a>
+                </div>
+              </td> -->
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- JavaScript -->
+<script>
+  // Select all checkbox
+  $('#select-all-checkbox').change(function() {
+      var isChecked = $(this).prop('checked');
+      $('input[name="selected_sales"]').prop('checked', isChecked);
+  });
+  // Delete selected sales
+  function deleteSelectedSales() {
+      var selectedSales = [];
+      $('input[name="selected_sales"]:checked').each(function() {
+          selectedSales.push($(this).val());
+      });
+
+      if (selectedSales.length === 0) {
+          alert("Please select at least one sale to delete.");
+          return;
+      }
+
+      // Send the selected sale IDs to the server for deletion
+      $.ajax({
+          type: 'POST',
+          url: '{% url 'sales:delete_selected_sales' %}',
+          data: {
+              'selected_sales[]': selectedSales,
+              'csrfmiddlewaretoken': '{{ csrf_token }}'
+          },
+          success: function(response) {
+              // Handle the success response
+              alert("Selected sales deleted successfully.");
+              // Refresh or update the sales list as needed
+              location.reload();
+          },
+          error: function(xhr) {
+              // Handle the error response
+              alert("An error occurred while deleting the selected sales.");
+          }
+      });
+  }
+</script>
+
+<!-- End of JavaScript -->
+{% endblock %}

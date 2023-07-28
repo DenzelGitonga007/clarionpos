@@ -1,0 +1,36 @@
+{% extends 'common/base.html' %}
+{% block title %}Create Product{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h3>Create Stock for {{ store }}</h3>
+    </div>
+    <div class="card-body">
+      <form method="POST">
+        {% csrf_token %}     
+        <div class="form-group">
+          <label for="product">Product</label>
+          <select class="form-control" id="category" name="product" required>
+            <option value="" disabled selected>Select a product</option>
+            <!-- Add product options dynamically -->
+            {% for product in products %}
+            <option value="{{ product.id }}">{{ product.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input type="number" class="form-control" id="id_quantity" name="quantity" placeholder="Quantity in pieces" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a class="btn btn-secondary" href="{% url 'inventory:stock_list' store.id %}">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

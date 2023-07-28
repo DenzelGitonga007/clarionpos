@@ -1,0 +1,16 @@
+{% extends 'common/base.html' %}
+{% block title %}View Store{% endblock %}
+{% block content %}
+  <div class="container">
+    <h2>Store Details</h2>
+    <div class="card">  
+      <div class="card-body">
+        <h5 class="card-title">{{ store.name }}</h5>
+        <p class="card-text">Store number: {{ store.id }}</p>       
+        <a href="{% url 'inventory:store_update' pk=store.pk %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'inventory:store_delete' pk=store.pk %}" class="btn btn-danger">Delete</a>
+        <a href="{% url 'inventory:store_list' %}" class="btn btn-secondary">Back</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

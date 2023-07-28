@@ -1,0 +1,44 @@
+{% extends 'common/base.html' %}
+{% block title %}View Product | Clarion Point of Sale System {% endblock %}
+{% block content %}
+  <!-- To display the messages -->
+  <!-- The messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+
+  <!-- To let the message disappear after a few seconds -->
+  <script>
+      setTimeout(function() {
+          $('.alert').fadeOut('slow');
+      }, 3000);
+  </script>
+
+<div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h2>{{ stock.store }} Product Details</h2>
+      </div>
+      <div class="card-body">
+        <h5>Name: {{ product.name }}</h5>
+        <p>Quantity: {{ total_cartons }} cartons and {{ remaining_pieces }} pieces</p> 
+        <p>Total quantity: {{ stock.quantity }} pieces</p>       
+      </div>
+      <div class="card-footer">
+        <a class="btn btn-primary rounded" href="{% url 'inventory:stock_update' store.id stock.product.id %}">Edit</a>
+        <a class="btn btn-danger" href="{% url 'inventory:stock_delete' store.id stock.product.id %}">Delete</a>
+        <a class="btn btn-secondary" href="{% url 'inventory:stock_list' id=stock.store.id %}">Back to Store Stock</a>
+      </div>
+    </div>
+</div>
+  
+
+{% endblock %}

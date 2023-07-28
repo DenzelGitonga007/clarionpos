@@ -1,0 +1,62 @@
+{% extends 'common/base.html' %}
+{% block title %}Create Customer{% endblock %}
+{% block content %}
+  <!-- To display the messages -->
+  <!-- The messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+
+  <!-- To let the message disappear after a few seconds -->
+  <script>
+      setTimeout(function() {
+          $('.alert').fadeOut('slow');
+      }, 3000);
+  </script>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Create Customer</h3>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter customer name" required>
+                </div>
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="name" name="email" placeholder="Enter customer email" required>
+                </div>
+                <!-- Phone number -->
+                <div class="form-group">
+                    <label for="phone_number">Phone Number</label>
+                    <input type="tel" class="form-control" id="name" name="phone_number" placeholder="Enter phone number" required>
+                </div>
+                <!-- Address -->
+                <div class="form-group">
+                    <label for="name">Address</label>
+                    <input type="" class="form-control" id="name" name="address" placeholder="Enter customer address" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a href="{% url 'inventory:customers_list' %}" class="btn btn-secondary">Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

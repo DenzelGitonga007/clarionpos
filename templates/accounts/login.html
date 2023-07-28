@@ -1,0 +1,76 @@
+{% extends 'common/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Login | Clarion POS
+{% endblock %}
+
+{% block content %}
+<!-- The messages -->
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endfor %}
+{% endif %}
+
+
+<!-- To let the message disappear after a few seconds -->
+<script>
+    setTimeout(function() {
+        $('.alert').fadeOut('slow');
+    }, 3000);
+</script>
+
+
+
+<section class="section section-content padding-y" style="min-height: 84vh;">
+    <div class="container d-flex justify-content-center">
+        <div class="card-body">
+            <div class="row">
+                <!-- Form image -->
+                <div class="container container--mini">
+                    <img class="img-fluid mx-auto d-block mb-5 img rounded" src="{% static 'images/logos/clarion_logo.svg' %}" style="height: fit-content; width: 200px;" alt="KAFU Logo">
+                <form method="post" class="form-signup mx-auto d-block mb-5" style="width: 400px;">
+                    {% csrf_token %}
+                    <!-- To handle errors -->
+                    {% if form.errors %}
+                    <div class="alert alert-danger"> 
+                        {% for error in form.errors %}
+                            <strong>Invalid username or password</strong><br>Please try again
+                        {% endfor %}  
+                    </div>
+                    {% endif %}
+                    <h2 class="form-signup-heading">Login</h2>
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label for="id_username">Username</label>
+                        <input type="text" class="form-control" name="username" maxlength="100" placeholder="Enter your username" required="" id="id_username" value="{{ form.username.value|default:'' }}">
+                    </div>
+                    
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="id_password">Password:</label>
+                        <input type="password" class="form-control" name="password" placeholder="Enter password" autocomplete="new-password" required="" id="id_password">   
+    
+                    </div>
+                    <input type="hidden" name="next" value="">
+                    <!-- Submit -->
+                    <button type="submit" class="btn btn btn-block btn-primary">Log In</button>
+                </form>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    <!-- Success -->
+    
+    
+</section>
+{% endblock %}
