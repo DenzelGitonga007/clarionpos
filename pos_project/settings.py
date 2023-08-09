@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^e4^0z0k-4x3d=$xzdrv_pn7cj68s_pi)zzjxsc+=9dfl)zii_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['*']
@@ -96,12 +96,13 @@ else: # If DEBUG is False, use postgress DB
     DATABASES = {
         'default': {
             #'ENGINE': 'django.db.backends.sqlite3',
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'railway',
-            'USER': 'postgres',
-            'PASSWORD': 'fkDKCmukdPutNyuhhezH',
-            'HOST': 'containers-us-west-50.railway.app',
-            'PORT': '6812',
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'clarionp_clarionposdb',
+            'USER': 'clarionp_denzel',
+            'PASSWORD': 'clariondenzel123',
+            'HOST': 'localhost',
+            'PORT': '3306',
+            # 'OPTIONS': {'charset': 'utf8mb4'},
         }
     }
 
