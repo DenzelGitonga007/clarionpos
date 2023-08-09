@@ -84,27 +84,27 @@ WSGI_APPLICATION = 'pos_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-if DEBUG: # If DEBUG is True, use localhost DB
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+# if DEBUG: # If DEBUG is True, use localhost DB
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
-else: # If DEBUG is False, use postgress DB
-    DATABASES = {
-        'default': {
-            #'ENGINE': 'django.db.backends.sqlite3',
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'clarionp_clarionposdb',
-            'USER': 'clarionp_denzel',
-            'PASSWORD': 'clariondenzel123',
-            'HOST': 'localhost',
-            'PORT': '3306',
-            # 'OPTIONS': {'charset': 'utf8mb4'},
-        }
+# else: # If DEBUG is False, use postgress DB
+DATABASES = {
+    'default': {
+        #'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'clarionp_clarionposdb',
+        'USER': 'clarionp_denzel',
+        'PASSWORD': 'clariondenzel123',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        # 'OPTIONS': {'charset': 'utf8mb4'},
     }
+}
 
 
 # Password validation
