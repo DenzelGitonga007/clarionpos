@@ -25,8 +25,20 @@ def admin_dashboard(request):
     # Retrieve the sales data for the chart
     sales = Sale.objects.annotate(sale_date=TruncDate('date')).values('sale_date').annotate(total_sales=Sum('total_amount')).order_by('sale_date')
 
-    labels = [sale['sale_date'].strftime('%Y-%m-%d') for sale in sales]
-    data = [float(sale['total_sales']) for sale in sales]
+    # labels = [sale['sale_date'].strftime('%Y-%m-%d') for sale in sales]
+    # data = [float(sale['total_sales']) for sale in sales]
+    labels = []
+    data = []
+
+    for sale in sales:
+        sale_date = sale.get('sale_date')
+        if sale_date:
+            labels.append(sale_date.strftime('%Y-%m-%d'))
+            data.append(float(sale['total_sales']))
+        else:
+            # Handle cases where sale_date is None, e.g., by skipping or providing a default value
+            pass
+
     
 
     sales_data = {

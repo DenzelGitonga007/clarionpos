@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 # For static files
 import os
+import pymysql
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^e4^0z0k-4x3d=$xzdrv_pn7cj68s_pi)zzjxsc+=9dfl)zii_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 ALLOWED_HOSTS = ['*']
@@ -84,26 +85,31 @@ WSGI_APPLICATION = 'pos_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# if DEBUG: # If DEBUG is True, use localhost DB
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': BASE_DIR / 'db.sqlite3',
-#         }
-#     }
-
-# else: # If DEBUG is False, use postgress DB
-DATABASES = {
-    'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'fkDKCmukdPutNyuhhezH',
-        'HOST': 'containers-us-west-50.railway.app',
-        'PORT': '6812',
+if DEBUG: # If DEBUG is True, use localhost DB
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+
+else: # If DEBUG is False, use mysql DB
+    DATABASES = {
+        'default': {
+            #'ENGINE': 'django.db.backends.sqlite3',
+            # 'ENGINE': 'mysql.connector.django',
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'clarionp_clarionposdb',
+            'USER': 'clarionp_denzel',
+            'PASSWORD': 'denzelclarion123',
+            'HOST': 'localhost',
+            'PORT': '3306',
+            # 'OPTIONS': {
+            #     'client': 'pymysql',
+                
+            # },
+        }
+    }
 
 
 # Password validation
@@ -162,4 +168,4 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
 # CSRF authentication
-CSRF_TRUSTED_ORIGINS = ['https://clarion-point-of-sale-system.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://clarionpos.co.ke']
