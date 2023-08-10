@@ -1,10 +1,9 @@
-{% extends 'common/base.html' %}
+{% extends "layouts/base.html" %}
 
-{% load static %}
+{% block title %} Login {% endblock %} 
 
-{% block title %}
-    Login | Clarion POS
-{% endblock %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
 <!-- The messages -->
@@ -19,58 +18,82 @@
   {% endfor %}
 {% endif %}
 
-
 <!-- To let the message disappear after a few seconds -->
 <script>
-    setTimeout(function() {
-        $('.alert').fadeOut('slow');
-    }, 3000);
+  setTimeout(function() {
+      $('.alert').fadeOut('slow');
+  }, 3000);
 </script>
 
-
-
-<section class="section section-content padding-y" style="min-height: 84vh;">
-    <div class="container d-flex justify-content-center">
-        <div class="card-body">
-            <div class="row">
-                <!-- Form image -->
-                <div class="container container--mini">
-                    <img class="img-fluid mx-auto d-block mb-5 img rounded" src="{% static 'images/logos/clarion_logo.svg' %}" style="height: fit-content; width: 200px;" alt="KAFU Logo">
-                <form method="post" class="form-signup mx-auto d-block mb-5" style="width: 400px;">
-                    {% csrf_token %}
-                    <!-- To handle errors -->
-                    {% if form.errors %}
-                    <div class="alert alert-danger"> 
-                        {% for error in form.errors %}
-                            <strong>Invalid username or password</strong><br>Please try again
-                        {% endfor %}  
-                    </div>
-                    {% endif %}
-                    <h2 class="form-signup-heading">Login</h2>
-                    <!-- Username -->
-                    <div class="form-group">
-                        <label for="id_username">Username</label>
-                        <input type="text" class="form-control" name="username" maxlength="100" placeholder="Enter your username" required="" id="id_username" value="{{ form.username.value|default:'' }}">
-                    </div>
-                    
-                    <!-- Password -->
-                    <div class="form-group">
-                        <label for="id_password">Password:</label>
-                        <input type="password" class="form-control" name="password" placeholder="Enter password" autocomplete="new-password" required="" id="id_password">   
-    
-                    </div>
-                    <input type="hidden" name="next" value="">
-                    <!-- Submit -->
-                    <button type="submit" class="btn btn btn-block btn-primary">Log In</button>
-                </form>
-                
-            </div>
-            
+  <div class="row">
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-header card-header-primary">
+          <h4 class="card-title">
+            Login
+          </h4>
         </div>
-        
+        <div class="card-body">
+
+          <h6 class="card-category">
+              {% if msg %}
+                <span class="text-danger">{{ msg | safe }}</span>
+              {% else %}
+                  Enter your credentials
+              {% endif %}  
+          </h6>
+          
+          <br />
+
+          <form role="form" method="post" action="">
+              
+            {% csrf_token %}
+            {% if form.errors %}
+            <div class="alert alert-danger"> 
+                {% for error in form.errors %}
+                    <strong>Invalid username or password</strong><br>Please try again
+                {% endfor %}  
+            </div>
+            {% endif %} 
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="id_username" class="bmd-label-floating">Username</label>
+                  <input type="text" class="form-control" name="username" maxlength="100" placeholder="" required="" id="id_username" value="{{ form.username.value|default:'' }}">
+                </div>
+              </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="id_password" class="bmd-label-floating">Password</label>
+                  <input type="password" class="form-control" name="password" placeholder="" autocomplete="new-password" required="" id="id_password">
+                </div>
+              </div>
+            </div>
+            <input type="hidden" name="next" value="">
+            <br />
+
+            <button type="submit" name="login" class="btn btn-block btn-primary pull-left">Login</button>
+
+            &nbsp; &nbsp; 
+            <span class="pull-right">
+              Don't have an account? <p class="text-primary">Ask the admin to create one for you</p>
+            </span>
+
+            <div class="clearfix"></div>
+
+          </form>
+        </div>
+      </div>
     </div>
-    <!-- Success -->
-    
-    
-</section>
-{% endblock %}
+  </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

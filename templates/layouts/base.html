@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
+  <link rel="icon" type="image/x-icon" href="{% static 'images/logos/clarion_favicon.ico' %}">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <link rel="canonical" href="https://appseed.us/admin-dashboards/django-dashboard-material">
+
+  <title>
+    {% block title %}{% endblock %} | Clarion POS
+  </title>
+
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <!-- CSS Files -->
+  <link href="/static/assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link href="/static/assets/demo/demo.css" rel="stylesheet" />
+
+  <!-- Specific Page CSS goes HERE  -->
+  {% block stylesheets %}{% endblock stylesheets %}
+
+  <!--    Link the bootstrap-->
+  <script src="{% static 'bootstrap/js/jquery-3.4.0.js' %}"></script>
+  <script src="{% static 'bootstrap/js/popper.min.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  
+  <!-- jquery -->
+  <script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
+  <script src="{% static 'bootstrap/js/jquery-3' %}"></script>
+  
+  <!-- Chart representation -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'custom_css/styles.css' %}">
+  <!-- Icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="{% static 'images/logos/clarion_favicon.ico' %}">
+
+
+
+</head>
+
+<body class="">
+  <div class="wrapper ">
+
+    {% include 'includes/sidebar.html' %}
+
+    <div class="main-panel">
+
+      {% include 'includes/navigation.html' %}
+
+      <!-- End Navbar -->
+      <!-- Main content -->
+      <div class="content">
+        <div class="container-fluid">
+
+          {% block content %}{% endblock content %}
+
+        </div>
+      </div>
+      <!-- End of main content -->
+      <!-- Footer -->
+      <footer>
+        {% include 'common/footer.html' %}
+      </footer>
+      <!-- End of footer -->
+
+    </div>
+  </div>
+
+  
+
+  {% include 'includes/scripts.html' %}
+
+  {% include 'includes/scripts-sidebar.html' %}
+  
+  <!-- Specific Page JS goes HERE  -->
+  {% block javascripts %}{% endblock javascripts %}
+  
+</body>
+</html>

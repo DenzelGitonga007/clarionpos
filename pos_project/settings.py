@@ -26,9 +26,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-^e4^0z0k-4x3d=$xzdrv_pn7cj68s_pi)zzjxsc+=9dfl)zii_'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
 
 ALLOWED_HOSTS = ['*']
 
@@ -85,6 +82,9 @@ WSGI_APPLICATION = 'pos_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
 
 if DEBUG: # If DEBUG is True, use localhost DB
     DATABASES = {
