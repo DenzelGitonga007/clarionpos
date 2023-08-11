@@ -1,6 +1,6 @@
 {% load static %}
 
-  <div class="sidebar" data-color="purple" data-background-color="white" data-image="">
+  <div class="sidebar" data-color="" data-background-color="" data-image="">
       <div class="logo">
         <a target="_self" rel="noopener noreferrer" href="{% url 'admin_dashboard:dashboard' %}" class="simple-text logo-normal">
           <img src="{% static 'images/logos/clarion_logo.svg' %}" alt="Logo" height="40" class="mr-2 rounded">
@@ -44,7 +44,7 @@
               <i class="material-icons">currency_exchange</i>
               <p>Sales</p>
             </a>
-            <ul><a href="">View Sales</a></ul>
+            <ul><a href="{% url 'admin_dashboard:select_sale_store' %}">View Sales by Store</a></ul>
           </li>
           <!-- End of Sales -->
           <hr>

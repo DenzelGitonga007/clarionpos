@@ -6,7 +6,27 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+  <!-- To display the messages -->
+  <!-- The messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
 
+  <!-- To let the message disappear after a few seconds -->
+  <script>
+      setTimeout(function() {
+          $('.alert').fadeOut('slow');
+      }, 3000);
+  </script>
+
+  <!-- Main content -->
     <div class="row">
       <!-- Total Sales -->
       <div class="col-lg-3 col-md-6 col-sm-6">
@@ -28,6 +48,8 @@
         </div>
       </div>
       <!-- End of total sales -->
+
+
       <!-- Debts -->
       <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
@@ -83,6 +105,9 @@
       </div>
       <!-- End of Customers -->
     </div>
+  <!-- End of main content -->
+
+  
     <!-- Graphs -->
     <!-- <div class="row">
       <div class="col-md-4">
