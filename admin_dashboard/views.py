@@ -20,15 +20,16 @@ def admin_dashboard(request):
     today = timezone.now().date()
 
     # Filter sales for the current day using MySQL-compatible datetime format
-    total_sales_today = Sale.objects.filter(date__date=today.strftime('%Y-%m-%d')).aggregate(total=Sum('total_amount'))['total']
+    total_sales_today = Sale.objects.order_by('-date').filter(date__date=today.strftime('%Y-%m-%d')).aggregate(total=Sum('total_amount'))['total']
 
     # Count the number of customers in the system
     total_customers = Customer.objects.count()
-
+    
     context = {
-        'today': today.strftime('%Y-%m-%d'),  # Format the current date as needed
+        'today': today,
         'total_sales_today': total_sales_today,
         'total_customers': total_customers,
+        
     }
     return render(request, 'home/index.html', context)
 
