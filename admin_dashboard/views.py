@@ -17,10 +17,11 @@ from django.contrib import messages
 # The main content
 @staff_member_required(login_url='accounts:login')
 def admin_dashboard(request):
-    today = timezone.now().date()
+    today = timezone.now()
+    print("Today: ",today) 
 
-    # Filter sales for the current day using MySQL-compatible datetime format
-    total_sales_today = Sale.objects.filter(date__date=today).annotate(truncated_date=TruncDate('date')).aggregate(total=Sum('total_amount'))['total']
+    # Filter sales for the current day
+    total_sales_today = Sale.objects.filter(date__date=today).aggregate(total_amount_today=Sum('total_amount'))['total_amount_today']
 
     # Count the number of customers in the system
     total_customers = Customer.objects.count()
