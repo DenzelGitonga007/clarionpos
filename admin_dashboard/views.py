@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required # only super admin can
 from django.contrib.admin.views.decorators import staff_member_required # only super admin can create the user
 import json
 from django.db.models import Sum, F
+from datetime import datetime
 from django.utils import timezone
 from django.db.models.functions import TruncDate
 from django.contrib import messages
@@ -16,20 +17,21 @@ from django.contrib import messages
 # The main content
 @staff_member_required(login_url='accounts:login')
 def admin_dashboard(request):
-    today = timezone.now().date()  # Get the current date
-    # Retrieve the total sales for the current day
-    total_sales_today = Sale.objects.filter(date__date=today).aggregate(total=Sum('total_amount'))['total']
+    today = timezone.now().date()
+
+    # Filter sales for the current day using MySQL-compatible datetime format
+    total_sales_today = Sale.objects.filter(date__date=today.strftime('%Y-%m-%d')).aggregate(total=Sum('total_amount'))['total']
+
     # Count the number of customers in the system
     total_customers = Customer.objects.count()
-    # Count the number of products in the system
-    total_products = Product.objects.count()
+
     context = {
-        'today': today,
+        'today': today.strftime('%Y-%m-%d'),  # Format the current date as needed
         'total_sales_today': total_sales_today,
         'total_customers': total_customers,
-        'total_products': total_products
     }
     return render(request, 'home/index.html', context)
+
 
     
 # Sales
