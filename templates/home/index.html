@@ -38,11 +38,11 @@
             <p class="card-category"><strong>Total Sales</strong>
               <br><small>All stores combined</small>
             </p>
-            <h3 class="card-title">KES {{ total_sales }}</h3>
+            <h3 class="card-title">KES {{ total_sales_today }}</h3>
           </div>
           <div class="card-footer">
             <div class="stats">
-              <i class="material-icons">date_range</i> Last 24 Hours
+              <i class="material-icons">date_range</i> Today: {{ today }}
             </div>
           </div>
         </div>
@@ -68,7 +68,8 @@
         </div>
       </div>
       <!-- End of Debts -->
-      <!-- Revenue -->
+
+      <!-- Products -->
       <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
           <div class="card-header card-header-warning card-header-icon">
@@ -76,7 +77,7 @@
               <i class="material-icons">store</i>
             </div>
             <p class="card-category"><strong>Products</strong></p>
-            <h3 class="card-title">Total no.</h3>
+            <h3 class="card-title">{{ total_products }}</h3>
           </div>
           <div class="card-footer">
             <div class="stats">
@@ -85,7 +86,8 @@
           </div>
         </div>
       </div>
-      <!-- End of Revenue -->
+      <!-- End of Products -->
+
       <!-- Customers -->
       <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
@@ -94,7 +96,7 @@
               <i class="fa fa-users"></i>
             </div>
             <p class="card-category"><strong>Customers</strong></p>
-            <h3 class="card-title">+245</h3>
+            <h3 class="card-title">+ {{ total_customers }}</h3>
           </div>
           <div class="card-footer">
             <div class="stats">
@@ -107,7 +109,7 @@
     </div>
   <!-- End of main content -->
 
-  
+
     <!-- Graphs -->
     <!-- <div class="row">
       <div class="col-md-4">
