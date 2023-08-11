@@ -62,7 +62,9 @@ def admin_dashboard(request):
         'product_quantities': product_quantities,
     }
 
-    return render(request, 'admin/dashboard.html', context)
+    # return render(request, 'admin/dashboard.html', context)
+    return render(request, 'home/index.html', context)
+
 
 # Sales
 # Select the sale store
