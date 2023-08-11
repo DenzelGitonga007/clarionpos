@@ -19,22 +19,19 @@ from django.contrib import messages
 def admin_dashboard(request):
     today = timezone.now().date()
 
-    total_sales = Sale.objects.aggregate(total=Sum('total_amount'))['total']
-    # Filter sales for the current day using MySQL-compatible datetime format
-    total_sales_today = Sale.objects.order_by('-date').filter(date__date=today.strftime('%Y-%m-%d')).aggregate(total=Sum('total_amount'))['total']
+    # Filter sales for the current day using TruncDate to strip time
+    total_sales_today = Sale.objects.filter(date__date=today).aggregate(total=Sum('total_amount'))['total']
+    print("Today's sales: ", total_sales_today)
 
     # Count the number of customers in the system
     total_customers = Customer.objects.count()
-    
+
     context = {
         'today': today,
-        # 'total_sales_today': total_sales_today,
-        'total_sales': total_sales,
+        'total_sales_today': total_sales_today,
         'total_customers': total_customers,
-        
     }
     return render(request, 'home/index.html', context)
-
 
     
 # Sales
