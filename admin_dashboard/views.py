@@ -7,63 +7,26 @@ from sales.models import Sale, SaleItem
 from django.contrib.auth.decorators import login_required # only super admin can create the user-- has to log in
 from django.contrib.admin.views.decorators import staff_member_required # only super admin can create the user
 import json
-from django.db.models import Sum
+from django.db.models import Sum, F
 from django.db.models.functions import TruncDate
 from django.contrib import messages
 
 
-# The charts
+# The main content
 @staff_member_required(login_url='accounts:login')
 def admin_dashboard(request):
-    # Retrieve the sales items and aggregate the quantities sold for each product
-    sales_items = SaleItem.objects.select_related('product').values('product__name').annotate(total_quantity=Sum('quantity')).order_by('-total_quantity')
-
-    product_labels = [item['product__name'] for item in sales_items]
-    product_quantities = [float(item['total_quantity']) for item in sales_items]
-    
-
-    # Retrieve the sales data for the chart
-    sales = Sale.objects.annotate(sale_date=TruncDate('date')).values('sale_date').annotate(total_sales=Sum('total_amount')).order_by('sale_date')
-
-    # labels = [sale['sale_date'].strftime('%Y-%m-%d') for sale in sales]
-    # data = [float(sale['total_sales']) for sale in sales]
-    labels = []
-    data = []
-
-    for sale in sales:
-        sale_date = sale.get('sale_date')
-        if sale_date:
-            labels.append(sale_date.strftime('%Y-%m-%d'))
-            data.append(float(sale['total_sales']))
-        else:
-            # Handle cases where sale_date is None, e.g., by skipping or providing a default value
-            pass
-
-    
-
-    sales_data = {
-        'labels': labels,
-        'datasets': [
-            {
-                'label': 'Sales',
-                'data': data,
-                'backgroundColor': 'rgba(54, 162, 235, 0.5)',
-                'borderColor': 'rgba(54, 162, 235, 1)',
-                'borderWidth': 1
-            }
-        ]
-    }
-
-    sales_data_json = json.dumps(sales_data)
-
+    # Retrieve the total sales by combining the sales of each store
+    total_sales = Sale.objects.aggregate(total=Sum('total_amount'))['total']
+    print(total_sales)
+    # Count the number of customers in the system
+    total_customers = Customer.objects.count()
     context = {
-        'sales_data': sales_data_json,
-        'product_labels': product_labels, 
-        'product_quantities': product_quantities,
+        'total_sales': total_sales,
+        'total_customers': total_customers,
     }
-
-    # return render(request, 'admin/dashboard.html', context)
     return render(request, 'home/index.html', context)
+
+    
 
 
 # Sales
@@ -154,3 +117,64 @@ def sale_delete(request, store_id, sale_id):
     return render(request, 'admin/sales/sales_delete.html', context)
 
 # End of delete sale
+
+
+
+
+
+
+
+
+
+
+# Original admin dashboard
+# @staff_member_required(login_url='accounts:login')
+# def admin_dashboard(request):
+#     # Retrieve the sales items and aggregate the quantities sold for each product
+#     sales_items = SaleItem.objects.select_related('product').values('product__name').annotate(total_quantity=Sum('quantity')).order_by('-total_quantity')
+
+#     product_labels = [item['product__name'] for item in sales_items]
+#     product_quantities = [float(item['total_quantity']) for item in sales_items]
+    
+
+#     # Retrieve the sales data for the chart
+#     sales = Sale.objects.annotate(sale_date=TruncDate('date')).values('sale_date').annotate(total_sales=Sum('total_amount')).order_by('sale_date')
+
+#     # labels = [sale['sale_date'].strftime('%Y-%m-%d') for sale in sales]
+#     # data = [float(sale['total_sales']) for sale in sales]
+#     labels = []
+#     data = []
+
+#     for sale in sales:
+#         sale_date = sale.get('sale_date')
+#         if sale_date:
+#             labels.append(sale_date.strftime('%Y-%m-%d'))
+#             data.append(float(sale['total_sales']))
+#         else:
+#             # Handle cases where sale_date is None, e.g., by skipping or providing a default value
+#             pass
+
+    
+
+#     sales_data = {
+#         'labels': labels,
+#         'datasets': [
+#             {
+#                 'label': 'Sales',
+#                 'data': data,
+#                 'backgroundColor': 'rgba(54, 162, 235, 0.5)',
+#                 'borderColor': 'rgba(54, 162, 235, 1)',
+#                 'borderWidth': 1
+#             }
+#         ]
+#     }
+
+#     sales_data_json = json.dumps(sales_data)
+
+#     context = {
+#         'sales_data': sales_data_json,
+#         'product_labels': product_labels, 
+#         'product_quantities': product_quantities,
+#     }
+
+#     return render(request, 'admin/dashboard.html', context)
