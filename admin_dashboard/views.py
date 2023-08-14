@@ -15,28 +15,28 @@ from django.contrib import messages
 
 
 # The main content
-# @staff_member_required(login_url='accounts:login')
-# def admin_dashboard(request):
-#     today = timezone.now().date()
-#     formatted_date = today.strftime('%Y-%m-%d')  # Format the date as YYYY-MM
+@staff_member_required(login_url='accounts:login')
+def admin_dashboard(request):
+    today = timezone.now().date()
+    formatted_date = today.strftime('%Y-%m-%d')  # Format the date as YYYY-MM
     
-#     total_sales_today = Sale.objects.filter(date__date=today).aggregate(total_amount_today=Sum('total_amount'))['total_amount_today']
-#     print("Today: ",today) 
+    total_sales_today = Sale.objects.filter(date__date=today).aggregate(total_amount_today=Sum('total_amount'))['total_amount_today']
+    print("Today: ",today) 
 
-#     # Filter sales for the current day
-#     # total_sales_today = Sale.objects.filter(date__date=today).aggregate(total_amount_today=Sum('total_amount'))['total_amount_today']
+    # Filter sales for the current day
+    # total_sales_today = Sale.objects.filter(date__date=today).aggregate(total_amount_today=Sum('total_amount'))['total_amount_today']
 
-#     # Count the number of customers in the system
-#     total_customers = Customer.objects.count()
+    # Count the number of customers in the system
+    total_customers = Customer.objects.count()
     
-#     context = {
-#         'today': today,
-#         'total_sales_today': total_sales_today,
-#         # 'total_sales': total_sales,
-#         'total_customers': total_customers,
+    context = {
+        'today': today,
+        'total_sales_today': total_sales_today,
+        # 'total_sales': total_sales,
+        'total_customers': total_customers,
         
-#     }
-#     return render(request, 'home/index.html', context)
+    }
+    return render(request, 'home/index.html', context)
 
 
     
@@ -139,53 +139,53 @@ def sale_delete(request, store_id, sale_id):
 
 
 # Original admin dashboard
-@staff_member_required(login_url='accounts:login')
-def admin_dashboard(request):
-    # Retrieve the sales items and aggregate the quantities sold for each product
-    sales_items = SaleItem.objects.select_related('product').values('product__name').annotate(total_quantity=Sum('quantity')).order_by('-total_quantity')
+# @staff_member_required(login_url='accounts:login')
+# def admin_dashboard(request):
+#     # Retrieve the sales items and aggregate the quantities sold for each product
+#     sales_items = SaleItem.objects.select_related('product').values('product__name').annotate(total_quantity=Sum('quantity')).order_by('-total_quantity')
 
-    product_labels = [item['product__name'] for item in sales_items]
-    product_quantities = [float(item['total_quantity']) for item in sales_items]
+#     product_labels = [item['product__name'] for item in sales_items]
+#     product_quantities = [float(item['total_quantity']) for item in sales_items]
     
 
-    # Retrieve the sales data for the chart
-    sales = Sale.objects.annotate(sale_date=TruncDate('date')).values('sale_date').annotate(total_sales=Sum('total_amount')).order_by('sale_date')
+#     # Retrieve the sales data for the chart
+#     sales = Sale.objects.annotate(sale_date=TruncDate('date')).values('sale_date').annotate(total_sales=Sum('total_amount')).order_by('sale_date')
 
-    # labels = [sale['sale_date'].strftime('%Y-%m-%d') for sale in sales]
-    # data = [float(sale['total_sales']) for sale in sales]
-    labels = []
-    data = []
+#     # labels = [sale['sale_date'].strftime('%Y-%m-%d') for sale in sales]
+#     # data = [float(sale['total_sales']) for sale in sales]
+#     labels = []
+#     data = []
 
-    for sale in sales:
-        sale_date = sale.get('sale_date')
-        if sale_date:
-            labels.append(sale_date.strftime('%Y-%m-%d'))
-            data.append(float(sale['total_sales']))
-        else:
-            # Handle cases where sale_date is None, e.g., by skipping or providing a default value
-            pass
+#     for sale in sales:
+#         sale_date = sale.get('sale_date')
+#         if sale_date:
+#             labels.append(sale_date.strftime('%Y-%m-%d'))
+#             data.append(float(sale['total_sales']))
+#         else:
+#             # Handle cases where sale_date is None, e.g., by skipping or providing a default value
+#             pass
 
     
 
-    sales_data = {
-        'labels': labels,
-        'datasets': [
-            {
-                'label': 'Sales',
-                'data': data,
-                'backgroundColor': 'rgba(54, 162, 235, 0.5)',
-                'borderColor': 'rgba(54, 162, 235, 1)',
-                'borderWidth': 1
-            }
-        ]
-    }
+#     sales_data = {
+#         'labels': labels,
+#         'datasets': [
+#             {
+#                 'label': 'Sales',
+#                 'data': data,
+#                 'backgroundColor': 'rgba(54, 162, 235, 0.5)',
+#                 'borderColor': 'rgba(54, 162, 235, 1)',
+#                 'borderWidth': 1
+#             }
+#         ]
+#     }
 
-    sales_data_json = json.dumps(sales_data)
+#     sales_data_json = json.dumps(sales_data)
 
-    context = {
-        'sales_data': sales_data_json,
-        'product_labels': product_labels, 
-        'product_quantities': product_quantities,
-    }
+#     context = {
+#         'sales_data': sales_data_json,
+#         'product_labels': product_labels, 
+#         'product_quantities': product_quantities,
+#     }
 
-    return render(request, 'admin/dashboard.html', context)
+#     return render(request, 'admin/dashboard.html', context)

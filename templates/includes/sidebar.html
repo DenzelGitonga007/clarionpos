@@ -12,7 +12,7 @@
       <!-- Sidebar content -->
       <div class="sidebar-wrapper">
         <ul class="nav">
-        {% if request.user.is_authenticated %}
+        {% if user.is_authenticated and user.is_superuser %}
           <!-- Users -->
           <li class="nav-item {% if 'index' in segment %} active {% endif %}">
             <a class="nav-link" href="/">
@@ -25,15 +25,16 @@
           </li>
           <!-- End of Users -->
           <hr>
+
           <!-- Inventory -->
           <li class="nav-item {% if 'index' in segment %} active {% endif %}">
             <a class="nav-link" href="/">
               <i class="material-icons">inventory_2</i>
               <p>Inventory</p>
             </a>
-            <ul><a href="">Categories</a></ul>
-            <ul><a href="">Products</a></ul>
-            <ul><a href="">Stores</a></ul>
+            <ul><a href="{% url 'inventory:category_list' %}">Categories</a></ul>
+            <ul><a href="{% url 'inventory:product_list' %}">Products</a></ul>
+            <ul><a href="{% url 'inventory:store_list' %}">Stores</a></ul>
             <ul><a href="">Stock</a></ul>
           </li>
           <!-- End of Inventory -->
