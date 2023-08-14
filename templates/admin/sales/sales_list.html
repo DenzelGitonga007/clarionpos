@@ -31,14 +31,28 @@
 
 
 <div class="container">
-    <!-- Sales in which shop/store -->
-  <div class="row mb-4">
-    <div class="col-md-6">
-      <h4 class="text-primary">Sales in {{ store.name }}</h4>
-    </div>
-    <!-- Total sales -->
-    <div class="col-md-6">
-      <h3 class="text-primary">Today: {{ today }} sales are {{ total_sale }}</h3>
+  <!-- Sales in which shop/store -->
+  <div class="card mb-4">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3">
+                <h5 class="text-primary">Sales in {{ store.name }}</h5>
+            </div>
+            <!-- Total sales -->
+            <div class="col-md-5">
+                <h5 class="text-primary text-center">
+                    <strong><small>Today, </small>{{ today }}</strong>
+                    <br>
+                    <small class="mb-1" data-count="{{ total_sale }}">Sales are: KES <small>0</small></small>
+                </h5>
+            </div>
+            <!-- Back to select store -->
+            <div class="col-md-4">
+                <a class="btn btn-secondary rounded mr-2" href="{% url 'admin_dashboard:select_sale_store' %}">
+                    <i class="fa fa-chevron-left mr-1"></i>Back to Select Sale Store list
+                </a>
+            </div>
+        </div>
     </div>
   </div>
 
@@ -55,7 +69,7 @@
             <br><small>Cash at hand</small>
           </p>
           <!-- Counting effect -->
-          <h3 class="card-title" data-count="{{ total_sales_today }}">KES <small>0</small></h3>
+          <h3 class="card-title" data-count="{{ total_sale }}">KES <small>0</small></h3>
         </div>
         <div class="card-footer">
           <div class="stats">
@@ -110,6 +124,7 @@
         </div>
       </a>
     </div>
+    <!-- End of Bank -->
 
     <!-- Debts -->
     <div class="col-lg-3 col-md-6 col-sm-6">
@@ -130,52 +145,61 @@
     </div>
     <!-- End of Debts -->
     
-    <!-- End of Bank -->
   </div>
   <!-- End of card -->
 
-  <!-- Filter dates -->
-  <!-- Today's Sale Total -->
-  <div class="row mb-3">
-    <div class="col">
-        <p class="text-muted">Today's sale totals to: KES {{ total_sale }}</p>
+  <br> <hr>
+
+    <!-- Filter dates -->
+  <div class="card mt-4">
+    <div class="card-body">
+        <h4 class="card-title">Filtered Sales</h4>
+        <p class="text-muted">To view sales from other dates, filter dates below 👇👇👇</p>
+        
+        <!-- Date Selection Section -->
+        <form method="GET">
+            {% csrf_token %}
+            <div class="form-row align-items-center">
+              <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <label class="sr-only" for="startDate">Start Date</label>
+                    <input type="date" name="start_date" class="form-control mb-2"required id="startDate" placeholder="Start Date">
+                </div>
+                <div class="col-auto">
+                    <label class="sr-only" for="endDate">End Date</label>
+                    <input type="date" name="end_date" class="form-control mb-2" required id="endDate" placeholder="End Date">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-2">View Sales</button>
+                </div>
+              </div>
+            </div>
+        </form>
+        <br>
+        <div class="row">
+          <div class="col">
+              <p>Start Date: {{ start_date }}</p>
+              <p>End Date: {{ end_date }}</p>
+              <p>Total Sales:
+                <strong data-count="{{ total_sale }}"></strong>
+              </p>
+          </div>
+      </div>
     </div>
   </div>
-
-  <!-- Date Selection Section -->
-  <div class="row mb-4">
-      <div class="col">
-          <form>
-              <div class="form-row align-items-center">
-                  <div class="col-auto">
-                      <label class="sr-only" for="startDate">Start Date</label>
-                      <input type="date" class="form-control mb-2" id="startDate" placeholder="Start Date">
-                  </div>
-                  <div class="col-auto">
-                      <label class="sr-only" for="endDate">End Date</label>
-                      <input type="date" class="form-control mb-2" id="endDate" placeholder="End Date">
-                  </div>
-                  <div class="col-auto">
-                      <button type="submit" class="btn btn-primary mb-2">View Sales</button>
-                  </div>
-              </div>
-          </form>
-      </div>
-  </div>
-
-
-
+  
+  <hr>
 
   <div class="card">
     <!-- Header -->
     <div class="card-header">
       <div class="d-flex justify-content-between align-items-center">
-        <h3>Sales in {{ store.name }}</h3>
-        <h5>Total Sales: {{ total_sale }}</h5>
+        <h5>Sales history</h5>
+        <h5 class="text-right">
+          Total Sales:
+          <strong data-count="{{ total_sale }}"></strong>
+        </h5>
         <div>
-          <a class="btn btn-secondary rounded mr-2" href="{% url 'admin_dashboard:select_sale_store' %}">
-            <i class="fa fa-chevron-left mr-1"></i>Back to Select Sale Store list
-          </a>
           <!-- Admin not make sale -->
           <!-- <a class="btn btn-success rounded" href="" style="margin-left: 10px;">
             <i class="fa fa-plus mr-2" style="font-size: 20px;"></i>Add Sale
@@ -225,6 +249,31 @@
     </div>
   </div>
 </div>
+
+<!-- Javascript -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const countElements = document.querySelectorAll("[data-count]");
+    
+    countElements.forEach(element => {
+      const countTarget = parseInt(element.getAttribute("data-count"));
+      const step = Math.ceil(countTarget / 50); // Adjust the step value as needed
+      let currentValue = 0;
+      
+      const updateCount = () => {
+        if (currentValue < countTarget) {
+          currentValue += step;
+          element.innerHTML = currentValue;
+          setTimeout(updateCount, 25); // Adjust the timeout value for speed
+        } else {
+          element.innerHTML = countTarget;
+        }
+      };
+      
+      updateCount();
+    });
+  });
+</script>
 
 {% endblock %}
 

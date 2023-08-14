@@ -39,7 +39,6 @@ def admin_dashboard(request):
     }
     return render(request, 'home/index.html', context)
 
-
     
 # Sales
 # Select the sale store
@@ -60,18 +59,65 @@ def select_sale_store(request):
 def sales_list(request, id):
     # Get today's date
     today = timezone.now().date()
-    
+
+    # Calculate start and end of current day
+    start_of_day = timezone.datetime(today.year, today.month, today.day, 0, 0, 0, tzinfo=timezone.utc)
+    end_of_day = start_of_day + timezone.timedelta(days=1)
+
     store = get_object_or_404(Store, id=id)  # Retrieve the store based on the provided ID
-    sales = Sale.objects.filter(sold_by__store=store)
-    # Obtain total sales
-    total_sale = sales.aggregate(total_amount=Sum('total_amount'))['total_amount']
+
+    # Retrieve the selected start_date and end_date from the query parameters
+    start_date_str = request.GET.get('start_date')
+    end_date_str = request.GET.get('end_date')
+
+    if start_date_str and end_date_str:
+        # Parse start_date and end_date if provided
+        start_date = timezone.datetime.strptime(start_date_str, '%Y-%m-%d').date()
+        end_date = timezone.datetime.strptime(end_date_str, '%Y-%m-%d').date() + timezone.timedelta(days=1)
+
+        # Filter sales for the store within the selected date range
+        sales = Sale.objects.filter(sold_by__store=store, date__gte=start_date, date__lt=end_date)
+
+        # Obtain total sales for the filtered sales
+        total_sale = sales.aggregate(total_amount=Sum('total_amount'))['total_amount']
+    else:
+        # Filter sales for the store and the current day
+        sales = Sale.objects.filter(sold_by__store=store, date__gte=start_of_day, date__lt=end_of_day)
+        
+        # Obtain total sales for the store
+        total_sale = sales.aggregate(total_amount=Sum('total_amount'))['total_amount']
+
     context = {
         'today': today,
         'store': store,
         'sales': sales,
         'total_sale': total_sale,
+        'start_date': start_date_str,
+        'end_date': end_date_str,
     }
     return render(request, 'admin/sales/sales_list.html', context)
+
+
+
+
+
+
+# Original sales_list view Add all the sales since start of sell
+# def sales_list(request, id):
+#     # Get today's date
+#     today = timezone.now().date()
+
+#     store = get_object_or_404(Store, id=id)  # Retrieve the store based on the provided ID
+#     sales = Sale.objects.filter(sold_by__store=store)
+#     # Obtain total sales
+#     total_sale = sales.aggregate(total_amount=Sum('total_amount'))['total_amount']
+#     context = {
+#         'today': today,
+#         'store': store,
+#         'sales': sales,
+#         'total_sale': total_sale,
+#     }
+#     return render(request, 'admin/sales/sales_list.html', context)
 # End of sales for the selected store
 
 # View the sale detail
