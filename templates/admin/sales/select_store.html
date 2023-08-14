@@ -15,15 +15,17 @@
             <h5 class="card-title">Select the store you wish to view sales for</h5>
             <p class="card-text">Click below</p>
             <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Select a store
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    {% for store in stores %}
-                    <a class="dropdown-item" href="{% url 'admin_dashboard:sales_list' store.id %}">{{ store.name }}</a>
-                    {% endfor %}
-                </div>
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Select a store
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  {% for store in stores %}
+                  <a class="dropdown-item" href="{% url 'admin_dashboard:sales_list' store.id %}">{{ store.name }}</a>
+                  {% endfor %}
+              </div>
+            </div>
           </div>
+        </div>
         </div>
       </div>
 
