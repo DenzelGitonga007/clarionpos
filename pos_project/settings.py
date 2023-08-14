@@ -88,11 +88,21 @@ DEBUG = False
 
 if DEBUG: # If DEBUG is True, use localhost DB
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+    'default': {
+        #'ENGINE': 'django.db.backends.sqlite3',
+        # 'ENGINE': 'mysql.connector.django',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'posdb',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        # 'OPTIONS': {
+        #     'client': 'pymysql',
+            
+        # },
     }
+}
 
 else: # If DEBUG is False, use mysql DB
     DATABASES = {
@@ -111,6 +121,14 @@ else: # If DEBUG is False, use mysql DB
             # },
         }
     }
+
+    # Default DB
+        # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.sqlite3',
+    #         'NAME': BASE_DIR / 'db.sqlite3',
+    #     }
+    # }
 
 
 # Password validation
