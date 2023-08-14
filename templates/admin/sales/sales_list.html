@@ -1,7 +1,7 @@
 
 {% extends "layouts/base.html" %}
 
-{% block title %} Dashboard {% endblock %} 
+{% block title %} Sales in {{ store.name }} {% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -31,6 +31,141 @@
 
 
 <div class="container">
+    <!-- Sales in which shop/store -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <h4 class="text-primary">Sales in {{ store.name }}</h4>
+    </div>
+    <!-- Total sales -->
+    <div class="col-md-6">
+      <h3 class="text-primary">Today: {{ today }} sales are {{ total_sale }}</h3>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div class="row">
+    <!-- Cash -->
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-header card-header-brown card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">local_atm</i>
+          </div>
+          <p class="card-category"><strong>Cash</strong>
+            <br><small>Cash at hand</small>
+          </p>
+          <!-- Counting effect -->
+          <h3 class="card-title" data-count="{{ total_sales_today }}">KES <small>0</small></h3>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="material-icons">date_range</i><em>Today:</em>&nbsp;<strong>{{ today }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of total sales -->
+
+    <!-- Till -->
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-header card-header-success card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">send_to_mobile</i>
+          </div>
+          <p class="card-category"><strong>Till</strong>
+            <br><small>Till Amount</small>
+          </p>
+          <!-- Counting effect -->
+          <h3 class="card-title" data-count="{{ total_products }}">0</h3>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="material-icons">inventory</i>In All Stores
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Till -->
+
+    <!-- Bank -->
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <a href="{% url 'inventory:customers_list' %}" style="text-decoration: none;">
+        <div class="card card-stats">
+          <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon">
+              <i class="fa fa-bank"></i>
+            </div>
+            <p class="card-category"><strong>Bank</strong>
+              <br><small>Sales in Bank</small>
+            </p>
+            <!-- Counting effect -->
+            <h3 class="card-title" data-count="{{ total_customers }}">+ 0</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">update</i> Just Updated
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Debts -->
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-header card-header-danger card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">balance</i>
+          </div>
+          <p class="card-category"><strong>Debtors</strong></p>
+          <h3 class="card-title">75</h3>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="material-icons">local_offer</i>Tracked from sales
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Debts -->
+    
+    <!-- End of Bank -->
+  </div>
+  <!-- End of card -->
+
+  <!-- Filter dates -->
+  <!-- Today's Sale Total -->
+  <div class="row mb-3">
+    <div class="col">
+        <p class="text-muted">Today's sale totals to: KES {{ total_sale }}</p>
+    </div>
+  </div>
+
+  <!-- Date Selection Section -->
+  <div class="row mb-4">
+      <div class="col">
+          <form>
+              <div class="form-row align-items-center">
+                  <div class="col-auto">
+                      <label class="sr-only" for="startDate">Start Date</label>
+                      <input type="date" class="form-control mb-2" id="startDate" placeholder="Start Date">
+                  </div>
+                  <div class="col-auto">
+                      <label class="sr-only" for="endDate">End Date</label>
+                      <input type="date" class="form-control mb-2" id="endDate" placeholder="End Date">
+                  </div>
+                  <div class="col-auto">
+                      <button type="submit" class="btn btn-primary mb-2">View Sales</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+
+
+
+
   <div class="card">
     <!-- Header -->
     <div class="card-header">

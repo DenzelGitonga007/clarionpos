@@ -106,7 +106,7 @@ def sales_view(request):
 # Filter the sales
 @staff_member_required(login_url='accounts:login')
 @require_GET
-def sales_list(request):
+def sales_list(request):    
     sales = Sale.objects.order_by('-date')
 
     # Obtain total sales

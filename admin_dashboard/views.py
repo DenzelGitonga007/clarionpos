@@ -58,11 +58,15 @@ def select_sale_store(request):
 # Sales for the selected store
 @staff_member_required(login_url='accounts:login')
 def sales_list(request, id):
+    # Get today's date
+    today = timezone.now().date()
+    
     store = get_object_or_404(Store, id=id)  # Retrieve the store based on the provided ID
     sales = Sale.objects.filter(sold_by__store=store)
     # Obtain total sales
     total_sale = sales.aggregate(total_amount=Sum('total_amount'))['total_amount']
     context = {
+        'today': today,
         'store': store,
         'sales': sales,
         'total_sale': total_sale,
