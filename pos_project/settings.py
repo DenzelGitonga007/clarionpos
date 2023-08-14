@@ -84,34 +84,25 @@ WSGI_APPLICATION = 'pos_project.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 if DEBUG: # If DEBUG is True, use localhost DB
-        # Default DB
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-
-    # DATABASES = {
-    #     'default': {
-    #         #'ENGINE': 'django.db.backends.sqlite3',
-    #         # 'ENGINE': 'mysql.connector.django',
-    #         'ENGINE': 'django.db.backends.mysql',
-    #         'NAME': 'posdb',
-    #         'USER': 'root',
-    #         'PASSWORD': '',
-    #         'HOST': 'localhost',
-    #         'PORT': '3306',
-    #         # 'OPTIONS': {
-    #         #     'client': 'pymysql',
+        'default': {
+            #'ENGINE': 'django.db.backends.sqlite3',
+            # 'ENGINE': 'mysql.connector.django',
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'posdb',
+            'USER': 'root',
+            'PASSWORD': '',
+            'HOST': 'localhost',
+            'PORT': '3306',
+            # 'OPTIONS': {
+            #     'client': 'pymysql',
                 
-    #         # },
-    #     }
-    # }
+            # },
+        }
+    }
 
 else: # If DEBUG is False, use mysql DB
     DATABASES = {
@@ -131,7 +122,13 @@ else: # If DEBUG is False, use mysql DB
         }
     }
 
-
+    # Default DB
+        # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.sqlite3',
+    #         'NAME': BASE_DIR / 'db.sqlite3',
+    #     }
+    # }
 
 
 # Password validation
