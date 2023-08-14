@@ -39,7 +39,8 @@
             <p class="card-category"><strong>Total Sales</strong>
               <br><small>All stores combined</small>
             </p>
-            <h3 class="card-title">KES <small>{{ total_sales_today }}</small></h3>
+            <!-- Counting effect -->
+            <h3 class="card-title" data-count="{{ total_sales_today }}">KES <small>0</small></h3>
           </div>
           <div class="card-footer">
             <div class="stats">
@@ -78,7 +79,8 @@
               <i class="material-icons">store</i>
             </div>
             <p class="card-category"><strong>Products</strong></p>
-            <h3 class="card-title">{{ total_products }}</h3>
+            <!-- Counting effect -->
+            <h3 class="card-title" data-count="{{ total_products }}">0</h3>
           </div>
           <div class="card-footer">
             <div class="stats">
@@ -98,7 +100,8 @@
                 <i class="fa fa-users"></i>
               </div>
               <p class="card-category"><strong>Customers</strong></p>
-              <h3 class="card-title">+ {{ total_customers }}</h3>
+              <!-- Counting effect -->
+              <h3 class="card-title" data-count="{{ total_customers }}">+ 0</h3>
             </div>
             <div class="card-footer">
               <div class="stats">
@@ -471,8 +474,32 @@
     $(document).ready(function() {
       // Javascript method's body can be found in assets/js/demos.js
       md.initDashboardPageCharts();
-
     });
   </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const countElements = document.querySelectorAll("[data-count]");
+    
+    countElements.forEach(element => {
+      const countTarget = parseInt(element.getAttribute("data-count"));
+      const step = Math.ceil(countTarget / 50); // Adjust the step value as needed
+      let currentValue = 0;
+      
+      const updateCount = () => {
+        if (currentValue < countTarget) {
+          currentValue += step;
+          element.innerHTML = currentValue;
+          setTimeout(updateCount, 3); // Adjust the timeout value for speed
+        } else {
+          element.innerHTML = countTarget;
+        }
+      };
+      
+      updateCount();
+    });
+  });
+</script>
+
 
 {% endblock javascripts %}

@@ -26,11 +26,14 @@ def admin_dashboard(request):
     end_of_day = start_of_day + timezone.timedelta(days=1)
     total_sales_today = Sale.objects.filter(date__gte=start_of_day, date__lt=end_of_day).aggregate(total_sales=Sum('total_amount'))['total_sales']
 
+    # Total products
+    total_products = Product.objects.count()
     # Count the number of customers in the system
     total_customers = Customer.objects.count()
 
     context = {
         'today': today,
+        'total_products': total_products,
         'total_sales_today': total_sales_today,
         'total_customers': total_customers,
     }
