@@ -13,28 +13,26 @@ from django.utils import timezone
 from django.db.models.functions import TruncDate
 from django.contrib import messages
 
+import datetime
 
-# The main content
+
+# Render the main content
 @staff_member_required(login_url='accounts:login')
 def admin_dashboard(request):
     today = timezone.now().date()
-    formatted_date = today.strftime('%Y-%m-%d')  # Format the date as YYYY-MM
-    
-    total_sales_today = Sale.objects.filter(date__date=today).aggregate(total_amount_today=Sum('total_amount'))['total_amount_today']
-    print("Today: ",today) 
 
-    # Filter sales for the current day
-    # total_sales_today = Sale.objects.filter(date__date=today).aggregate(total_amount_today=Sum('total_amount'))['total_amount_today']
+    # Calculate total sales for today
+    start_of_day = timezone.datetime(today.year, today.month, today.day, 0, 0, 0, tzinfo=timezone.utc)
+    end_of_day = start_of_day + timezone.timedelta(days=1)
+    total_sales_today = Sale.objects.filter(date__gte=start_of_day, date__lt=end_of_day).aggregate(total_sales=Sum('total_amount'))['total_sales']
 
     # Count the number of customers in the system
     total_customers = Customer.objects.count()
-    
+
     context = {
         'today': today,
         'total_sales_today': total_sales_today,
-        # 'total_sales': total_sales,
         'total_customers': total_customers,
-        
     }
     return render(request, 'home/index.html', context)
 

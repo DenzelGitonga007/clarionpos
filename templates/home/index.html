@@ -26,6 +26,7 @@
       }, 3000);
   </script>
 
+
   <!-- Main content -->
     <div class="row">
       <!-- Total Sales -->
@@ -38,7 +39,7 @@
             <p class="card-category"><strong>Total Sales</strong>
               <br><small>All stores combined</small>
             </p>
-            <h3 class="card-title">KES <small>Still under development</small></h3>
+            <h3 class="card-title">KES <small>{{ total_sales_today }}</small></h3>
           </div>
           <div class="card-footer">
             <div class="stats">
@@ -90,21 +91,24 @@
 
       <!-- Customers -->
       <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-info card-header-icon">
-            <div class="card-icon">
-              <i class="fa fa-users"></i>
+        <a href="{% url 'inventory:customers_list' %}" style="text-decoration: none;">
+          <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+              <div class="card-icon">
+                <i class="fa fa-users"></i>
+              </div>
+              <p class="card-category"><strong>Customers</strong></p>
+              <h3 class="card-title">+ {{ total_customers }}</h3>
             </div>
-            <p class="card-category"><strong>Customers</strong></p>
-            <h3 class="card-title">+ {{ total_customers }}</h3>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">update</i> Just Updated
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">update</i> Just Updated
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
+      
       <!-- End of Customers -->
     </div>
   <!-- End of main content -->
