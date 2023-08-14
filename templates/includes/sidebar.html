@@ -13,6 +13,16 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
         {% if user.is_authenticated and user.is_superuser %}
+          <!-- Sales -->
+          <li class="nav-item {% if 'index' in segment %} active {% endif %}">
+            <a class="nav-link" href="/">
+              <i class="material-icons">currency_exchange</i>
+              <p>Sales</p>
+            </a>
+            <ul><a href="{% url 'admin_dashboard:select_sale_store' %}">View Sales by Store</a></ul>
+          </li>
+          <!-- End of Sales -->
+          <hr>
           <!-- Users -->
           <li class="nav-item {% if 'index' in segment %} active {% endif %}">
             <a class="nav-link" href="/">
@@ -38,16 +48,6 @@
             <ul><a href="{% url 'inventory:store_stock' %}">Stock</a></ul>
           </li>
           <!-- End of Inventory -->
-          <hr>
-          <!-- Sales -->
-          <li class="nav-item {% if 'index' in segment %} active {% endif %}">
-            <a class="nav-link" href="/">
-              <i class="material-icons">currency_exchange</i>
-              <p>Sales</p>
-            </a>
-            <ul><a href="{% url 'admin_dashboard:select_sale_store' %}">View Sales by Store</a></ul>
-          </li>
-          <!-- End of Sales -->
           <hr>
           <br>
           <!-- Logout -->
