@@ -43,7 +43,8 @@
                 <h5 class="text-primary text-center">
                     <strong><small>Today, </small>{{ today }}</strong>
                     <br>
-                    <small class="mb-1" data-count="{{ total_sale }}">Sales are: KES <small>0</small></small>
+                    <small>Sales are: KES </small>
+                    <strong class="mb-1" data-count="{{ total_sale }}"></strong>
                 </h5>
             </div>
             <!-- Back to select store -->
@@ -69,7 +70,7 @@
             <br><small>Cash at hand</small>
           </p>
           <!-- Counting effect -->
-          <h3 class="card-title" data-count="{{ total_sale }}">KES <small>0</small></h3>
+          <h3 class="card-title" data-count="{{ cash_total }}">KES <small>0</small></h3>
         </div>
         <div class="card-footer">
           <div class="stats">
@@ -91,7 +92,7 @@
             <br><small>Till Amount</small>
           </p>
           <!-- Counting effect -->
-          <h3 class="card-title" data-count="{{ total_products }}">0</h3>
+          <h3 class="card-title" data-count="{{ till_total }}">0</h3>
         </div>
         <div class="card-footer">
           <div class="stats">
@@ -114,7 +115,7 @@
               <br><small>Sales in Bank</small>
             </p>
             <!-- Counting effect -->
-            <h3 class="card-title" data-count="{{ total_customers }}">+ 0</h3>
+            <h3 class="card-title" data-count="{{ bank_total }}">+ 0</h3>
           </div>
           <div class="card-footer">
             <div class="stats">
@@ -190,6 +191,7 @@
   
   <hr>
 
+  <!-- Sales history -->
   <div class="card">
     <!-- Header -->
     <div class="card-header">
@@ -220,6 +222,7 @@
                 <th>Total Amount</th>
                 <th>Rendered Amount</th>
                 <th>Balance</th>
+                <th>Payment Method</th>
                 <th>Actions</th>
             </tr>
           </thead>
@@ -232,6 +235,7 @@
               <td>{{ sale.total_amount }}</td>
               <td>{{ sale.rendered_amount }}</td>
               <td>{{ sale.balance }}</td>
+              <td>{{ sale.payment_method }}</td>
               <td>
                 <div class="btn-group">
                   <a class="btn btn-primary mr-2 rounded" href="{% url 'admin_dashboard:sale_detail' store.id sale.id %}">Detail</a>
@@ -248,6 +252,7 @@
       </div>
     </div>
   </div>
+  <!-- End of sale history -->
 </div>
 
 <!-- Javascript -->

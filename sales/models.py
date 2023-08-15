@@ -15,7 +15,7 @@ class Sale(models.Model):
     payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return "{} {}".format(self.sold_by, self.date, self.total_amount, self.rendered_amount, self.balance, self.customer)
+        return "{} {}".format(self.sold_by, self.date, self.total_amount, self.rendered_amount, self.balance, self.customer, self.payment_method)
 
 
 class SaleItem(models.Model):

@@ -7,7 +7,7 @@ from sales.models import Sale, SaleItem
 from django.contrib.auth.decorators import login_required # only super admin can create the user-- has to log in
 from django.contrib.admin.views.decorators import staff_member_required # only super admin can create the user
 import json
-from django.db.models import Sum, F
+from django.db.models import Case, When, Sum, Value, F, DecimalField
 from datetime import datetime
 from django.utils import timezone
 from django.db.models.functions import TruncDate
@@ -70,6 +70,8 @@ def sales_list(request, id):
     start_date_str = request.GET.get('start_date')
     end_date_str = request.GET.get('end_date')
 
+    sales = Sale.objects.filter(sold_by__store=store)
+
     if start_date_str and end_date_str:
         # Parse start_date and end_date if provided
         start_date = timezone.datetime.strptime(start_date_str, '%Y-%m-%d').date()
@@ -87,6 +89,11 @@ def sales_list(request, id):
         # Obtain total sales for the store
         total_sale = sales.aggregate(total_amount=Sum('total_amount'))['total_amount']
 
+    # Calculate total amounts for each payment method
+    cash_total = sales.filter(payment_method__name='CASH').aggregate(cash_total=Sum('total_amount'))['cash_total'] or 0
+    till_total = sales.filter(payment_method__name='TILL').aggregate(till_total=Sum('total_amount'))['till_total'] or 0
+    bank_total = sales.filter(payment_method__name='BANK').aggregate(bank_total=Sum('total_amount'))['bank_total'] or 0
+
     context = {
         'today': today,
         'store': store,
@@ -94,9 +101,11 @@ def sales_list(request, id):
         'total_sale': total_sale,
         'start_date': start_date_str,
         'end_date': end_date_str,
+        'cash_total': cash_total,
+        'till_total': till_total,
+        'bank_total': bank_total,
     }
     return render(request, 'admin/sales/sales_list.html', context)
-
 
 
 
