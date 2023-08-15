@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from inventory.models import Product, Customer, Stock, Store
+from inventory.models import Product, Customer, PaymentMethod, Stock, Store
 from django.contrib.auth.models import User
 from django.conf import settings
 
@@ -12,6 +12,7 @@ class Sale(models.Model):
     rendered_amount = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     balance = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return "{} {}".format(self.sold_by, self.date, self.total_amount, self.rendered_amount, self.balance, self.customer)
