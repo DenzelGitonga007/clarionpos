@@ -40,8 +40,8 @@ class CustomerAdmin(admin.ModelAdmin):
     search_fields = ['name', 'email', 'phone_number']
 
 class PaymentMethodAdmin(admin.ModelAdmin):
-    list_display = ['name', 'code']
-    search_fields = ['name', 'code']
+    list_display = ['name',]
+    search_fields = ['name',]
 
 admin.site.register(Store)
 admin.site.register(Category)
