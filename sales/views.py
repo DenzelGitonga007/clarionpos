@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Sale, SaleItem
-from inventory.models import Product, Customer, Stock
+from inventory.models import Product, Customer, PaymentMethod,Stock
 import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required # only super admin can create the user
@@ -91,12 +91,14 @@ def submit_sale(request):
 def sales_view(request):
     products = Product.objects.all()
     customers = Customer.objects.all()
+    payment_method = PaymentMethod.objects.all()
     units = SaleItem._meta.get_field('unit').choices
     product_json = []
     context = {
         'page_title': "Point of Sale",
         'products': products,
         'customers': customers,
+        'payment_method': payment_method,
         'units': units,
         'product_json': json.dumps(product_json)
     }

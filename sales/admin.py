@@ -16,9 +16,9 @@ class SaleItemInline(admin.TabularInline):
 
 class SaleAdmin(admin.ModelAdmin):
     inlines = [SaleItemInline]
-    list_display = [sold_by, 'date', 'customer', 'total_amount', 'rendered_amount', 'balance']
-    search_fields = ['customer__name', 'customer__email']
-    list_filter = ['sold_by', 'date']
+    list_display = [sold_by, 'date', 'customer', 'total_amount', 'rendered_amount', 'balance', 'payment_method']
+    search_fields = ['customer__name', 'customer__email', 'payment_method']
+    list_filter = ['sold_by', 'date', 'payment_method']
 
     def save_model(self, request, obj, form, change):
         if not obj.pk:  # Only set transferred_by on creation, not on update
