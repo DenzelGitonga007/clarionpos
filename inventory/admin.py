@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Store, Category, Product, Stock, Customer
+from .models import Store, Category, Product, Stock, Customer, PaymentMethod
 
 
 class StockInline(admin.StackedInline):
@@ -39,8 +39,13 @@ class CustomerAdmin(admin.ModelAdmin):
     list_display = ['name', 'email', 'phone_number']
     search_fields = ['name', 'email', 'phone_number']
 
+class PaymentMethodAdmin(admin.ModelAdmin):
+    list_display = ['name', 'code']
+    search_fields = ['name', 'code']
+
 admin.site.register(Store)
 admin.site.register(Category)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Stock, StockAdmin)
 admin.site.register(Customer, CustomerAdmin)
+admin.site.register(PaymentMethod, PaymentMethodAdmin)
