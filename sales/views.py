@@ -28,8 +28,8 @@ def submit_sale(request):
                 rendered_amount=sale_data['renderedAmount'],
                 balance=sale_data['balance'],
                 customer_id=sale_data['customerId'],
+                payment_method_id=sale_data['payment_methodId'],
             )
-            print("Sale:", sale)
 
             # Calculate the total amount for the sale
             total_amount = 0
@@ -91,14 +91,14 @@ def submit_sale(request):
 def sales_view(request):
     products = Product.objects.all()
     customers = Customer.objects.all()
-    payment_method = PaymentMethod.objects.all()
+    payment_methods = PaymentMethod.objects.all()
     units = SaleItem._meta.get_field('unit').choices
     product_json = []
     context = {
         'page_title': "Point of Sale",
         'products': products,
         'customers': customers,
-        'payment_method': payment_method,
+        'payment_methods': payment_methods,
         'units': units,
         'product_json': json.dumps(product_json)
     }

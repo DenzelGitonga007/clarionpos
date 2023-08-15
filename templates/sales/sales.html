@@ -87,6 +87,7 @@
                 </button>
             </div>
             <div class="modal-body">
+                <!-- Select Customer -->
                 <div class="form-group">
                     <label for="customer">Select a Customer</label>
                     <select class="form-control" id="customer-select" required>
@@ -96,14 +97,31 @@
                         {% endfor %}
                     </select>
                 </div>
+                <!-- End of select customer -->
+                <!-- Rendered amount -->
                 <div class="form-group">
                     <label for="rendered-amount">Rendered Amount:</label>
                     <input type="number" class="form-control" id="rendered-amount" step="0.01" placeholder="Enter the rendered amount" name="rendered_amount">
                 </div>
+                <!-- End of rendered amount -->
+                <!-- Balance -->
                 <div class="form-group">
                     <label for="balance">Balance:</label>
                     <input type="number" class="form-control" name="balance" id="balance" step="0.01" disabled>
                 </div>
+                <!-- End of balance -->
+                <!-- Select payment method -->
+                <div class="form-group">
+                    <label for="payment_method">Select Payment Method</label>
+                    <select class="form-control" id="payment_method-select" required>
+                        <option value="" disabled selected>Pay Via?</option>
+                        {% for method in payment_methods %}
+                        <option value="{{ method.id }}">{{ method.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- End of payment method -->
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -346,6 +364,9 @@
         // Retrieve the customer ID from the select field
         var customerId = parseInt(document.getElementById("customer-select").value);
 
+        // Retrieve the payment method
+        var payment_methodId = parseInt(document.getElementById("payment_method-select").value);
+
         // Retrieve the balance from the balance input field
         var balance = updateBalance();
 
@@ -354,6 +375,7 @@
             saleItems: saleItems,
             renderedAmount: renderedAmount,
             customerId: customerId,
+            payment_methodId: payment_methodId,
             balance: balance
         };
 
@@ -428,6 +450,10 @@
         // Display customer details
         var customerName = document.getElementById("customer-select").options[document.getElementById("customer-select").selectedIndex].text;
         receiptContent += '<p><strong>Customer:</strong> ' + customerName + '</p>';
+
+        // Display the payment method
+        var paymentMethod = document.getElementById("payment_method-select").options[document.getElementById("payment_method-select").selectedIndex].text;
+        receiptContent += '<p><strong>Payment Method:</strong> ' + paymentMethod + '</p>';
 
         // Display sale items
         receiptContent += '<table class="table" style="margin-top: 20px; margin-left: auto; margin-right: auto;">';
