@@ -23,51 +23,77 @@
   </script>
 
 <!-- Main content -->
-<form id="expense-form" method="post">
-  {% csrf_token %}
-  <label for="date">Date:</label>
-  <input type="date" name="date" required>
-  
-  <div id="expense-fields">
-      <div class="expense-field">
-          <label for="description">Description:</label>
-          <input type="text" name="description[]" required>
-          <label for="amount">Amount:</label>
-          <input type="number" name="amount[]" step="0.01" required>
-          <button type="button" class="remove-field">Remove</button>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h4>Enter Expenses</h4>
+        </div>
+        <div class="card-body">
+          <form id="expense-form" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="date">Date:</label>
+              <input type="date" class="form-control" name="date" required>
+            </div>
+            
+            <div id="expense-fields">
+              <div class="expense-field mb-3">
+
+              </div>
+            </div>
+            
+            <div class="d-flex justify-content-end mb-3">
+              <button type="button" id="add-expense" class="btn btn-primary">Add Expense</button>
+            </div>
+            
+            <div class="form-group row">
+              <div class="col-md-12">
+                <button type="submit" class="btn btn-success btn-block">Submit</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
       </div>
+    </div>
   </div>
-  <button type="button" id="add-expense">Add Expense</button>
-  <button type="submit">Submit</button>
-</form>
+</div>
+
 
 <!-- End of main content -->
 
 <!-- Javascript -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const addExpenseButton = document.getElementById('add-expense');
-    const expenseFields = document.getElementById('expense-fields');
+  document.addEventListener('DOMContentLoaded', function () {
+      const addExpenseButton = document.getElementById('add-expense');
+      const expenseFields = document.getElementById('expense-fields');
 
-    addExpenseButton.addEventListener('click', function () {
-        const newField = document.createElement('div');
-        newField.classList.add('expense-field');
-        newField.innerHTML = `
-            <input type="text" name="description[]" required>
-            <input type="number" name="amount[]" step="0.01" required>
-            <button type="button" class="remove-field">Remove</button>
-        `;
-        expenseFields.appendChild(newField);
-    });
+      addExpenseButton.addEventListener('click', function () {
+          const newField = document.createElement('div');
+          newField.classList.add('expense-field', 'mb-3');
+          newField.innerHTML = `
+          <div class="d-flex align-items-center">
+              <label for="description">Description:</label>
+              <input type="text" class="form-control ml-1" name="description[]" required>
+              <label for="amount" class="ml-2">Amount:</label>
+              <input type="number" class="form-control ml-1" name="amount[]" step="0.01" required>
+              <button type="button" class="btn btn-danger ml-2 remove-field">Remove</button>
+          </div>
+          `;
 
-    expenseFields.addEventListener('click', function (event) {
-        if (event.target.classList.contains('remove-field')) {
-            event.target.closest('.expense-field').remove();
-        }
-    });
-});
+          expenseFields.appendChild(newField);
+      });
 
+      expenseFields.addEventListener('click', function (event) {
+          if (event.target.classList.contains('remove-field')) {
+              event.target.closest('.expense-field').remove();
+          }
+      });
+  });
 </script>
+
 
 <!-- End of Javascript -->
 {% endblock %}
