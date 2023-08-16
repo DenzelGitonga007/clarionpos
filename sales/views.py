@@ -2,8 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Sale, SaleItem, Expense
-from .forms import ExpenseForm
-from inventory.models import Product, Customer, PaymentMethod,Stock
+from inventory.models import Product, Customer, PaymentMethod, Stock
 import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required # only super admin can create the user
@@ -18,27 +17,29 @@ from django.views.decorators.http import require_GET
 @login_required(login_url='accounts:login')
 def expense(request):
     if request.method == 'POST':
-        form = ExpenseForm(request.POST)
-        if form.is_valid():
-            # Create an Expense instance from the form data
+        date = request.POST.get('date')  # Get the date once
+        descriptions = request.POST.getlist('description[]')
+        amounts = request.POST.getlist('amount[]')
+        print("Date:", date)
+        print("Description: ", descriptions)
+        print("Amounts: ", amounts)
+        for description, amount in zip(descriptions, amounts):
             expense = Expense(
                 recorded_by=request.user,
                 store=request.user.store,
-                date=form.cleaned_data['date'],
-                description=form.cleaned_data['description'],
-                amount=form.cleaned_data['amount']
+                date=date,  # Use the same date for all expenses
+                description=description,
+                amount=amount
             )
-            expense.save()  # Save the expense to the database
-            # Success
-            messages.success(request, "Expense created successfully...")
-            return redirect('accounts:home')  # Redirect to the expense list page
-    else:
-        form = ExpenseForm()
+            expense.save()
 
-    context = {
-        'form': form,
-    }
+        # Success message
+        messages.success(request, "Expenses saved successfully")
+        return redirect('accounts:home')
+
+    context = {}
     return render(request, 'sales/expenses.html', context)
+
 # End of expense entry
 
 

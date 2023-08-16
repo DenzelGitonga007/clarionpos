@@ -24,29 +24,21 @@
 
 <!-- Main content -->
 <form id="expense-form" method="post">
-<!-- Form errors -->
-{% if form.errors %}
-<div class="alert alert-danger"> 
-    {% for error in form.errors %}
-        <strong>Error in creating the expense</strong><br>Please try again
-    {% endfor %}  
-</div>
-{% endif %} 
-<!-- End of form errors -->
-{% csrf_token %}
-    <div id="expense-fields">
+  {% csrf_token %}
+  <label for="date">Date:</label>
+  <input type="date" name="date" required>
+  
+  <div id="expense-fields">
       <div class="expense-field">
-        <label for="date">Date:</label>
-        <input type="date" name="date" required>
-        <label for="description">Description:</label>
-        <input type="text" name="description" required>
-        <label for="amount">Amount:</label>
-        <input type="number" name="amount" step="0.01" required>
-        <button type="button" class="remove-field">Remove</button>
+          <label for="description">Description:</label>
+          <input type="text" name="description[]" required>
+          <label for="amount">Amount:</label>
+          <input type="number" name="amount[]" step="0.01" required>
+          <button type="button" class="remove-field">Remove</button>
       </div>
-    </div>
-    <button type="button" id="add-expense">Add Expense</button>
-    <button type="submit">Submit</button>
+  </div>
+  <button type="button" id="add-expense">Add Expense</button>
+  <button type="submit">Submit</button>
 </form>
 
 <!-- End of main content -->
@@ -61,9 +53,8 @@
         const newField = document.createElement('div');
         newField.classList.add('expense-field');
         newField.innerHTML = `
-            <input type="date" name="date" required>
-            <input type="text" name="description" required>
-            <input type="number" name="amount" step="0.01" required>
+            <input type="text" name="description[]" required>
+            <input type="number" name="amount[]" step="0.01" required>
             <button type="button" class="remove-field">Remove</button>
         `;
         expenseFields.appendChild(newField);
@@ -77,5 +68,6 @@
 });
 
 </script>
+
 <!-- End of Javascript -->
 {% endblock %}
