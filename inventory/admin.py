@@ -36,8 +36,8 @@ class StockAdmin(admin.ModelAdmin):
 
 
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['name', 'email', 'phone_number']
-    search_fields = ['name', 'email', 'phone_number']
+    list_display = ['name', 'phone_number', 'location']
+    search_fields = ['name', 'phone_number', 'location']
 
 class PaymentMethodAdmin(admin.ModelAdmin):
     list_display = ['name',]

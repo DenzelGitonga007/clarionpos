@@ -50,9 +50,8 @@ class Stock(models.Model):
 
 class Customer(models.Model):
     name = models.CharField(max_length=255)
-    email = models.EmailField()
     phone_number = models.CharField(max_length=20)
-    address = models.CharField(max_length=255)
+    location = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name

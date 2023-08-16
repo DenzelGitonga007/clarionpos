@@ -29,26 +29,30 @@
         </div>
         <div class="card-body">
             <form method="POST" action="">
+                <!-- Form errors -->
+                {% if form.errors %}
+                <div class="alert alert-danger"> 
+                    {% for error in form.errors %}
+                        <strong>Error in creating the customer</strong><br>Please try again
+                    {% endfor %}  
+                </div>
+                {% endif %} 
+                <!-- End of form errors -->
                 {% csrf_token %}
                 <!-- Name -->
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" id="name" name="name" placeholder="Enter customer name" required>
                 </div>
-                <!-- Email -->
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="name" name="email" placeholder="Enter customer email" required>
-                </div>
                 <!-- Phone number -->
                 <div class="form-group">
                     <label for="phone_number">Phone Number</label>
-                    <input type="tel" class="form-control" id="name" name="phone_number" placeholder="Enter phone number" required>
+                    <input type="tel" class="form-control" id="phone_number" name="phone_number" placeholder="Enter phone number" required>
                 </div>
-                <!-- Address -->
+                <!-- Location -->
                 <div class="form-group">
-                    <label for="name">Address</label>
-                    <input type="" class="form-control" id="name" name="address" placeholder="Enter customer address" required>
+                    <label for="name">Location</label>
+                    <input type="" class="form-control" id="location" name="location" placeholder="Enter customer address" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Create</button>
                 <a href="{% url 'inventory:customers_list' %}" class="btn btn-secondary">Back</a>

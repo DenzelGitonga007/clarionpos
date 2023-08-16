@@ -47,9 +47,8 @@
                     <thead class="thead-light">
                         <tr>
                             <th>Name</th>
-                            <th>Email</th>
                             <th>Phone Number</th>
-                            <th>Address</th>
+                            <th>Location</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -57,9 +56,8 @@
                         {% for customer in customers %}
                         <tr>
                             <td>{{ customer.name }}</td>
-                            <td>{{ customer.email }}</td>
                             <td>{{ customer.phone_number }}</td>
-                            <td>{{ customer.address }}</td>
+                            <td>{{ customer.location }}</td>
                             <td>
                               <div class="btn-group">
                                   <a class="btn btn-primary mr-2 rounded" href="{% url 'inventory:customers_detail' customer.id %}">Detail</a>
