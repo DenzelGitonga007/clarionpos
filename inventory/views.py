@@ -77,6 +77,8 @@ def product_delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
         product.delete()
+        # Success message
+        messages.success(request, "Product deleted...")
         return redirect('inventory:product_list')
     return render(request, 'admin/products/product_delete.html', {'product': product})
 

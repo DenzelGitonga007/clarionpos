@@ -29,6 +29,17 @@
       </div>
       <div class="card-body">
         <form method="POST" action="{% url 'inventory:user_create' %}">
+            <!-- Form errors -->
+            {% if form.errors %}
+            <div class="alert alert-danger"> 
+                {% for error in form.errors %}
+                    <strong>Error in creating the user</strong>
+                    <br>Please try again
+                    <small>The password shouldn't be too similar to the username</small>
+                {% endfor %}  
+            </div>
+            {% endif %} 
+            <!-- End of form errors -->
             {% csrf_token %}
             <div class="form-group">
               <label for="username">Username:</label>
@@ -64,6 +75,7 @@
               <input type="password" class="form-control" id="password2" name="password2" required>
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
+            <a href="{% url 'inventory:user_list' %}" class="btn btn-secondary">Back</a>
           </form>
           
       </div>

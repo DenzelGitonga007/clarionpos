@@ -30,6 +30,15 @@
       <div class="card-body">
         <form method="POST">
           {% csrf_token %}
+          <!-- Form errors -->
+          {% if form.errors %}
+          <div class="alert alert-danger"> 
+              {% for error in form.errors %}
+                  <strong>Error in updating the product</strong><br>Please try again
+              {% endfor %}  
+          </div>
+          {% endif %} 
+          <!-- End of form errors -->
           <div class="form-group">
             <label for="name">Name</label>
             <input type="text" class="form-control" id="name" name="name" value="{{ product.name }}" required>

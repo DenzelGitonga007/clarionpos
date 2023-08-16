@@ -32,6 +32,15 @@
     <div class="card-body">
       <form method="POST" action="{% url 'inventory:product_create' %}">
         {% csrf_token %}
+        <!-- Form errors -->
+        {% if form.errors %}
+        <div class="alert alert-danger"> 
+            {% for error in form.errors %}
+                <strong>Error in creating the product</strong><br>Please try again
+            {% endfor %}  
+        </div>
+        {% endif %} 
+        <!-- End of form errors -->
         <div class="form-group">
           <label for="name">Name</label>
           <input type="text" class="form-control" id="name" name="name" placeholder="Enter product name" required>
