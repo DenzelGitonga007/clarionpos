@@ -1,0 +1,81 @@
+{% extends 'common/base.html' %}
+{% block title %}Expenses | Clarion POS {% endblock %}
+{% block content %}
+  <!-- To display the messages -->
+  <!-- The messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+
+  <!-- To let the message disappear after a few seconds -->
+  <script>
+      setTimeout(function() {
+          $('.alert').fadeOut('slow');
+      }, 3000);
+  </script>
+
+<!-- Main content -->
+<form id="expense-form" method="post">
+<!-- Form errors -->
+{% if form.errors %}
+<div class="alert alert-danger"> 
+    {% for error in form.errors %}
+        <strong>Error in creating the expense</strong><br>Please try again
+    {% endfor %}  
+</div>
+{% endif %} 
+<!-- End of form errors -->
+{% csrf_token %}
+    <div id="expense-fields">
+      <div class="expense-field">
+        <label for="date">Date:</label>
+        <input type="date" name="date" required>
+        <label for="description">Description:</label>
+        <input type="text" name="description" required>
+        <label for="amount">Amount:</label>
+        <input type="number" name="amount" step="0.01" required>
+        <button type="button" class="remove-field">Remove</button>
+      </div>
+    </div>
+    <button type="button" id="add-expense">Add Expense</button>
+    <button type="submit">Submit</button>
+</form>
+
+<!-- End of main content -->
+
+<!-- Javascript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const addExpenseButton = document.getElementById('add-expense');
+    const expenseFields = document.getElementById('expense-fields');
+
+    addExpenseButton.addEventListener('click', function () {
+        const newField = document.createElement('div');
+        newField.classList.add('expense-field');
+        newField.innerHTML = `
+            <input type="date" name="date" required>
+            <input type="text" name="description" required>
+            <input type="number" name="amount" step="0.01" required>
+            <button type="button" class="remove-field">Remove</button>
+        `;
+        expenseFields.appendChild(newField);
+    });
+
+    expenseFields.addEventListener('click', function (event) {
+        if (event.target.classList.contains('remove-field')) {
+            event.target.closest('.expense-field').remove();
+        }
+    });
+});
+
+</script>
+<!-- End of Javascript -->
+{% endblock %}

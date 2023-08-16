@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Sale, SaleItem
+from .models import Sale, SaleItem, Expense
+from .forms import ExpenseForm
 from inventory.models import Product, Customer, PaymentMethod,Stock
 import json
 from django.contrib.auth.decorators import login_required
@@ -10,6 +11,39 @@ from django.utils import timezone
 from django.contrib import messages
 from django.db.models import DateField, Sum
 from django.views.decorators.http import require_GET
+
+
+# Expenses
+# Enter Expenses
+@login_required(login_url='accounts:login')
+def expense(request):
+    if request.method == 'POST':
+        form = ExpenseForm(request.POST)
+        if form.is_valid():
+            # Create an Expense instance from the form data
+            expense = Expense(
+                recorded_by=request.user,
+                store=request.user.store,
+                date=form.cleaned_data['date'],
+                description=form.cleaned_data['description'],
+                amount=form.cleaned_data['amount']
+            )
+            expense.save()  # Save the expense to the database
+            # Success
+            messages.success(request, "Expense created successfully...")
+            return redirect('accounts:home')  # Redirect to the expense list page
+    else:
+        form = ExpenseForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'sales/expenses.html', context)
+# End of expense entry
+
+
+
+
 
 # Make sale
 @login_required(login_url='accounts:login')

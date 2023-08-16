@@ -4,7 +4,6 @@ from inventory.models import Product, Customer, PaymentMethod, Stock, Store
 from django.contrib.auth.models import User
 from django.conf import settings
 
-
 class Sale(models.Model):
     sold_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, editable=False)
     date = models.DateTimeField(auto_now_add=True)
@@ -37,3 +36,20 @@ class SaleItem(models.Model):
 
     def __str__(self):
         return "{} {} {} {} {}".format(self.sale, self.product, self.unit, self.quantity, self.sale_price)
+
+
+# Expenses
+class Expense(models.Model):
+    recorded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, editable=False, null=True, blank=True)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, editable=False, null=True)
+    description = models.TextField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    date = models.DateField()
+
+    def save(self, *args, **kwargs):
+        if not self.store:
+            self.store = self.recorded_by.store
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.date} - {self.recorded_by.username} - {self.description}"

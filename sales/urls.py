@@ -13,4 +13,7 @@ urlpatterns = [
     path('sale-delete/<int:pk>/', views.sales_delete, name='sales_delete'), # delete sale
     path('delete-selected-sales/', views.delete_selected_sales, name='delete_selected_sales'), # delete multiple sales
 
+    # Expenses
+    path('expenses/', views.expense, name='expenses'), # enter expenses
+
 ]
