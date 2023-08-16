@@ -35,13 +35,14 @@
             <input type="text" class="form-control" id="name" name="name" value="{{ product.name }}" required>
           </div>
           <div class="form-group">
-            <label for="quantity">Quantity</label>
-            <input type="number" class="form-control" id="quantity" name="quantity" value="{{ product.quantity }}" required>
-          </div>
-          <div class="form-group">
             <label for="price">Price</label>
             <input type="number" class="form-control" id="price" name="price" value="{{ product.price }}" required>
           </div>
+          <div class="form-group">
+            <label for="pieces_per_carton">Pieces Per Carton</label>
+            <input type="number" class="form-control" id="pieces_per_carton" name="pieces_per_carton" value="{{ product.pieces_per_carton }}" required>
+          </div>
+
           <div class="form-group">
             <label for="category">Category</label>
             <select class="form-control" id="category" name="category" required>
@@ -50,15 +51,9 @@
               {% endfor %}
             </select>
           </div>
-          <div class="form-group">
-            <label for="store">Store</label>
-            <select class="form-control" id="store" name="store" required>
-              {% for store in stores %}
-              <option value="{{ store.pk }}" {% if store.pk == product.store.pk %}selected{% endif %}>{{ store.name }}</option>
-              {% endfor %}
-            </select>
-          </div>
+
           <button type="submit" class="btn btn-primary">Save Changes</button>
+          <a class="btn btn-secondary" href="{% url 'inventory:product_list' %}">Cancel</a>
         </form>
       </div>
     </div>
