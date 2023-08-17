@@ -55,27 +55,29 @@
       <!-- End of total sales -->
 
 
-      <!-- Debts -->
+      <!-- Expenses -->
       <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-danger card-header-icon">
-            <div class="card-icon">
-              <i class="material-icons">balance</i>
+        <a href="{% url 'admin_dashboard:select_expense_store' %}" style="text-decoration: none;">
+          <div class="card card-stats">
+            <div class="card-header card-header-danger card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">balance</i>
+              </div>
+              <p class="card-category"><strong>Expenses</strong>
+                <br><small>All stores combined</small>
+              </p>
+              <!-- Counting effect -->
+              <h3 class="card-title" data-count="{{ total_expenses_today }}">KES <small>0</small></h3>
             </div>
-            <p class="card-category"><strong>Expenses</strong>
-              <br><small>All stores combined</small>
-            </p>
-            <!-- Counting effect -->
-            <h3 class="card-title" data-count="{{ total_expenses_today }}">KES <small>0</small></h3>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">date_range</i><em>Today:</em>&nbsp;<strong>{{ today }}</strong>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">date_range</i><em>Today:</em>&nbsp;<strong>{{ today }}</strong>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
-      <!-- End of Debts -->
+      <!-- End of expense -->
 
       <!-- Products -->
       <div class="col-lg-3 col-md-6 col-sm-6">

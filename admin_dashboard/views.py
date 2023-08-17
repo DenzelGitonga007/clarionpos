@@ -45,6 +45,17 @@ def admin_dashboard(request):
     }
     return render(request, 'home/index.html', context)
 
+# Select the sale store
+@staff_member_required(login_url='accounts:login')
+def select_expense_store(request):
+    # Retrieve the stores
+    stores = Store.objects.all()
+    context = {
+        'stores': stores,
+    }
+    # Present to the page
+    return render(request, 'admin/sales/select_expense_store.html', context)
+# End of select sale store 
 
     
 # Sales

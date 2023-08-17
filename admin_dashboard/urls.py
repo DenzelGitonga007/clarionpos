@@ -13,6 +13,9 @@ urlpatterns = [
     path('sale/update/<int:store_id>/<int:sale_id>/', views.sale_update, name='sale_update'), # update sale
     path('sale/delete/<int:store_id>/<int:sale_id>/', views.sale_delete, name='sale_delete'), # delete sale
 
+    # Expenses
+    path('select-expense-store/', views.select_expense_store, name='select_expense_store'), # select the store for the expense
+
 
 ]
 
