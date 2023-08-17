@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from accounts.models import User
 from inventory.models import *
 from django.http import JsonResponse
-from sales.models import Sale, SaleItem
+from sales.models import Sale, SaleItem, Expense
 # For authentication
 from django.contrib.auth.decorators import login_required # only super admin can create the user-- has to log in
 from django.contrib.admin.views.decorators import staff_member_required # only super admin can create the user
@@ -24,7 +24,12 @@ def admin_dashboard(request):
     # Calculate total sales for today
     start_of_day = timezone.datetime(today.year, today.month, today.day, 0, 0, 0, tzinfo=timezone.utc)
     end_of_day = start_of_day + timezone.timedelta(days=1)
+    
+    # Calculate total sales
     total_sales_today = Sale.objects.filter(date__gte=start_of_day, date__lt=end_of_day).aggregate(total_sales=Sum('total_amount'))['total_sales']
+
+    # Calculate total expenses for today
+    total_expenses_today = Expense.objects.filter(date__gte=start_of_day, date__lt=end_of_day).aggregate(total_expenses=Sum('amount'))['total_expenses']
 
     # Total products
     total_products = Product.objects.count()
@@ -35,9 +40,11 @@ def admin_dashboard(request):
         'today': today,
         'total_products': total_products,
         'total_sales_today': total_sales_today,
+        'total_expenses_today': total_expenses_today,
         'total_customers': total_customers,
     }
     return render(request, 'home/index.html', context)
+
 
     
 # Sales
