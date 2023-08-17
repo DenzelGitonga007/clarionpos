@@ -29,7 +29,7 @@
   </script>
 <!-- End of message script -->
 
-
+<!-- Main content -->
 <div class="container">
   <!-- Sales in which shop/store -->
   <div class="card mb-4">
@@ -133,7 +133,7 @@
             <i class="material-icons">balance</i>
           </div>
           <p class="card-category"><strong>Expenses</strong></p>
-          <h3 class="card-title">Coming Soon!</h3>
+          <h3 class="card-title" data-count="{{ total_expenses }}">+ 0</h3>
         </div>
         <div class="card-footer">
           <div class="stats">
@@ -209,26 +209,26 @@
   <hr>
 
   <!-- Sales history -->
-  <div class="card">
+  <!-- <div class="card"> -->
     <!-- Header -->
-    <div class="card-header">
+    <!-- <div class="card-header">
       <div class="d-flex justify-content-between align-items-center">
         <h5>Sales history</h5>
         <h5 class="text-right">
           Total Sales:
           <strong data-count="{{ total_sale }}"></strong>
         </h5>
-        <div>
+        <div> -->
           <!-- Admin not make sale -->
           <!-- <a class="btn btn-success rounded" href="" style="margin-left: 10px;">
             <i class="fa fa-plus mr-2" style="font-size: 20px;"></i>Add Sale
           </a> -->
           <!-- End of admin not make sale -->
-        </div>
+        <!-- </div>
       </div>
-    </div>
+    </div> -->
     <!-- End of header     -->
-    <div class="card-body">
+    <!-- <div class="card-body">
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead class="thead-light">
@@ -267,10 +267,63 @@
           </tbody>
         </table>
       </div>
-    </div>
-  </div>
+    </div> -->
+  <!-- </div> -->
   <!-- End of sale history -->
+
+  <!-- Expenses history -->
+  <!-- <div class="card"> -->
+    <!-- Header -->
+    <!-- <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5>Expenses history</h5>
+        <h5 class="text-right">
+          Total Expenses:
+          <strong data-count="{{ total_expenses }}"></strong>
+        </h5>
+        <div> -->
+          <!-- Admin not make sale -->
+          <!-- <a class="btn btn-success rounded" href="" style="margin-left: 10px;">
+            <i class="fa fa-plus mr-2" style="font-size: 20px;"></i>Add Sale
+          </a> -->
+          <!-- End of admin not make sale -->
+        <!-- </div>
+      </div>
+    </div> -->
+    <!-- End of header     -->
+    <!-- <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="thead-light">
+            <tr>
+                <th>Description</th>
+                <th>Total Amount</th>
+                <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for expense in expenses %}
+            <tr>
+              <td>{{ expense.description }}</td>
+              <td>{{ expense.amount }}</td>
+              <td>
+                <div class="btn-group">
+                  <a class="btn btn-primary mr-2 rounded" href="{% url 'admin_dashboard:sale_detail' store.id sale.id %}">Detail</a>
+                  <a class="btn btn-warning mr-2 rounded" href="{% url 'admin_dashboard:sale_update' store.id sale.id %}">Update</a>
+                  <a class="btn btn-danger mr-2 rounded" href="{% url 'admin_dashboard:sale_delete' store.id sale.id %}">Delete</a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div> -->
+  
+
 </div>
+<!-- End of main content -->
 
 <!-- Javascript -->
 <script>

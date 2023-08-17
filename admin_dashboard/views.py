@@ -112,6 +112,15 @@ def sales_list(request, id):
     till_total = sales.filter(payment_method__name='TILL').aggregate(till_total=Sum('total_amount'))['till_total'] or 0
     bank_total = sales.filter(payment_method__name='BANK').aggregate(bank_total=Sum('total_amount'))['bank_total'] or 0
 
+    # Retrieve expenses for the store based on selected dates
+    if start_date_str and end_date_str:
+        expenses = Expense.objects.filter(store=store, date__gte=start_date, date__lt=end_date)
+    else:
+        expenses = Expense.objects.filter(store=store, date__gte=start_of_day, date__lt=end_of_day)
+    
+    total_expenses = expenses.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
+
+
     context = {
         'today': today,
         'store': store,
@@ -122,6 +131,7 @@ def sales_list(request, id):
         'cash_total': cash_total,
         'till_total': till_total,
         'bank_total': bank_total,
+        'total_expenses' : total_expenses,
     }
     return render(request, 'admin/sales/sales_list.html', context)
 
