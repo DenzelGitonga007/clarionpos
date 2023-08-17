@@ -62,13 +62,15 @@
             <div class="card-icon">
               <i class="material-icons">balance</i>
             </div>
-            <p class="card-category"><strong>Expenses</strong></p>
+            <p class="card-category"><strong>Expenses</strong>
+              <br><small>All stores combined</small>
+            </p>
             <!-- Counting effect -->
             <h3 class="card-title" data-count="{{ total_expenses_today }}">KES <small>0</small></h3>
           </div>
           <div class="card-footer">
             <div class="stats">
-              <i class="material-icons">local_offer</i>Tracked from all stores
+              <i class="material-icons">date_range</i><em>Today:</em>&nbsp;<strong>{{ today }}</strong>
             </div>
           </div>
         </div>
@@ -82,7 +84,9 @@
             <div class="card-icon">
               <i class="material-icons">store</i>
             </div>
-            <p class="card-category"><strong>Products</strong></p>
+            <p class="card-category"><strong>Products</strong>
+              <br><small>All stores combined</small>
+            </p>
             <!-- Counting effect -->
             <h3 class="card-title" data-count="{{ total_products }}">0</h3>
           </div>
@@ -103,7 +107,9 @@
               <div class="card-icon">
                 <i class="fa fa-users"></i>
               </div>
-              <p class="card-category"><strong>Customers</strong></p>
+              <p class="card-category"><strong>Customers</strong>
+                <br><small>All stores combined</small>
+              </p>
               <!-- Counting effect -->
               <h3 class="card-title" data-count="{{ total_customers }}">+ 0</h3>
             </div>
