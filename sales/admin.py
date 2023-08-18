@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Sale, SaleItem, Expense
+from .models import Sale, SaleItem, Expense, Debtor
 
 
 # Get transferred by value
@@ -46,7 +46,15 @@ class ExpenseAdmin(admin.ModelAdmin):
         if not obj.recorded_by:
             obj.recorded_by = request.user
         super().save_model(request, obj, form, change)
- 
+
+
+# Debtors
+class DebtorAdmin(admin.ModelAdmin):
+    list_display = ['customer', 'outstanding_balance']
+    list_filter = ['customer', 'outstanding_balance']
+    search_fields = ['customer', 'outstanding_balance']
+
 admin.site.register(Sale, SaleAdmin)
 admin.site.register(SaleItem, SaleItemAdmin)
 admin.site.register(Expense, ExpenseAdmin)
+admin.site.register(Debtor, DebtorAdmin)

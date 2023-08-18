@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Sale, SaleItem, Expense
+from .models import Sale, SaleItem, Expense,Debtor
 from inventory.models import Product, Customer, PaymentMethod, Stock
 import json
 from django.contrib.auth.decorators import login_required
@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.db.models import DateField, Sum
 from django.views.decorators.http import require_GET
+from decimal import Decimal
 
 
 # Expenses
@@ -41,10 +42,6 @@ def expense(request):
     return render(request, 'sales/expenses.html', context)
 
 # End of expense entry
-
-
-
-
 
 # Make sale
 @login_required(login_url='accounts:login')
@@ -104,9 +101,24 @@ def submit_sale(request):
 
             # Calculate the balance
             rendered_amount = sale_data['renderedAmount']
-            balance = rendered_amount - total_amount
+            rendered_amount = sale_data['renderedAmount']
+            balance = Decimal(rendered_amount - total_amount)
             sale.balance = balance
 
+            # # Check if the customer has become a debtor
+            # if balance < 0 and not Debtor.objects.filter(customer=sale.customer).exists():
+            #     Debtor.objects.create(customer=sale.customer, outstanding_balance=balance)
+
+            # Check if the customer has become a debtor
+            debtor = Debtor.objects.filter(customer=sale.customer).first()
+            if debtor:
+                debtor.outstanding_balance += balance
+                debtor.save()
+            else:
+                if balance < 0:
+                    Debtor.objects.create(customer=sale.customer, outstanding_balance=balance)
+
+            
             # Save the sale
             sale.save()
 
@@ -114,11 +126,15 @@ def submit_sale(request):
             return JsonResponse({'message': 'Sale submitted successfully.'})
 
         except Exception as e:
+            print("Exception: ",e)
             # Failed to create the sale
             return JsonResponse({'error': str(e)}, status=400)
+            print("Exception: ",e)
+        print("Exception: ",e)
 
     # Invalid request method
     return JsonResponse({'error': 'Invalid request method.'}, status=405)
+
 # End of sale
 
 # Present the sale page

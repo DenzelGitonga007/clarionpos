@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'pos_project.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 if DEBUG: # If DEBUG is True, use localhost DB
     DATABASES = {

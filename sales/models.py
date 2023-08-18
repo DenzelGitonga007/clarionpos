@@ -3,7 +3,15 @@ from django.db import models
 from inventory.models import Product, Customer, PaymentMethod, Stock, Store
 from django.contrib.auth.models import User
 from django.conf import settings
+from decimal import Decimal
 
+# Debtors
+class Debtor(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    outstanding_balance = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+# Sale instance
 class Sale(models.Model):
     sold_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, editable=False)
     date = models.DateTimeField(auto_now_add=True)
@@ -14,9 +22,26 @@ class Sale(models.Model):
     payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return "{} {}".format(self.sold_by, self.date, self.total_amount, self.rendered_amount, self.balance, self.customer, self.payment_method)
+        return "{} {} {} {} {} {} {}".format(self.sold_by, self.date, self.total_amount, self.rendered_amount, self.balance, self.customer, self.payment_method)
+        
+    # Save with Debtor
+    def save(self, *args, **kwargs):
+        # Convert rendered_amount to Decimal if it's not already
+        if not isinstance(self.rendered_amount, Decimal):
+            self.rendered_amount = Decimal(self.rendered_amount)
+
+        # Calculate balance and ensure it's always a Decimal
+        self.balance = Decimal(self.rendered_amount) - self.total_amount
+
+        super().save(*args, **kwargs)
+
+        # Check if the balance is negative and the customer is not already a debtor
+        if self.balance < 0 and not Debtor.objects.filter(customer=self.customer).exists():
+            # Create a new Debtor record for the customer
+            Debtor.objects.create(customer=self.customer, outstanding_balance=self.balance)
 
 
+# Sale items
 class SaleItem(models.Model):
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
