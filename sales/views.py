@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Sale, SaleItem, Expense,Debtor
+from .models import Sale, SaleItem, Expense, Debtor
 from inventory.models import Product, Customer, PaymentMethod, Stock
 import json
 from django.contrib.auth.decorators import login_required
@@ -13,35 +13,26 @@ from django.views.decorators.http import require_GET
 from decimal import Decimal
 
 
-# Expenses
-# Enter Expenses
+# Pay debt
 @login_required(login_url='accounts:login')
-def expense(request):
+def pay_debt(request):
     if request.method == 'POST':
-        date = request.POST.get('date')  # Get the date once
-        descriptions = request.POST.getlist('description[]')
-        amounts = request.POST.getlist('amount[]')
-        print("Date:", date)
-        print("Description: ", descriptions)
-        print("Amounts: ", amounts)
-        for description, amount in zip(descriptions, amounts):
-            expense = Expense(
-                recorded_by=request.user,
-                store=request.user.store,
-                date=date,  # Use the same date for all expenses
-                description=description,
-                amount=amount
-            )
-            expense.save()
+        try:
+            data = json.loads(request.body)
+            debtor_id = data['debtorId']
+            payment_amount = data['paymentAmount']
 
-        # Success message
-        messages.success(request, "Expenses saved successfully")
-        return redirect('accounts:home')
+            debtor = get_object_or_404(Debtor, id=debtor_id)
+            debtor.outstanding_balance += payment_amount
+            debtor.save()
+            messages.success(request, "Debt paid")
+            return JsonResponse({'message': 'Payment successfully submitted.'})
 
-    context = {}
-    return render(request, 'sales/expenses.html', context)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
 
-# End of expense entry
+    return JsonResponse({'error': 'Invalid request method.'}, status=405)
+
 
 # Make sale
 @login_required(login_url='accounts:login')
@@ -199,3 +190,33 @@ def delete_selected_sales(request):
 # Sales for admin
 
 # End of sales for admin
+
+# Expenses
+# Enter Expenses
+@login_required(login_url='accounts:login')
+def expense(request):
+    if request.method == 'POST':
+        date = request.POST.get('date')  # Get the date once
+        descriptions = request.POST.getlist('description[]')
+        amounts = request.POST.getlist('amount[]')
+        print("Date:", date)
+        print("Description: ", descriptions)
+        print("Amounts: ", amounts)
+        for description, amount in zip(descriptions, amounts):
+            expense = Expense(
+                recorded_by=request.user,
+                store=request.user.store,
+                date=date,  # Use the same date for all expenses
+                description=description,
+                amount=amount
+            )
+            expense.save()
+
+        # Success message
+        messages.success(request, "Expenses saved successfully")
+        return redirect('accounts:home')
+
+    context = {}
+    return render(request, 'sales/expenses.html', context)
+
+# End of expense entry

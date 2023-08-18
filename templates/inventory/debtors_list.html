@@ -21,19 +21,21 @@
           $('.alert').fadeOut('slow');
       }, 3000);
   </script>
-  <!-- Main content -->
-  <div class="container">
+
+<!-- Main content -->
+<div class="container">
+    <!-- Display debtors List -->
     <div class="card">
         <!-- Header -->
         <div class="card-header">
-          <div class="d-flex justify-content-between align-items-center">
-            <h3>Debtors List</h3>
-            <div>
-              <a class="btn btn-secondary rounded mr-2" href="{% url 'accounts:home' %}">
-                <i class="fa fa-chevron-left mr-1"></i>Back to Dashboard
-              </a>
+            <div class="d-flex justify-content-between align-items-center">
+                <h3>Debtors List</h3>
+                <div>
+                    <a class="btn btn-secondary rounded mr-2" href="{% url 'accounts:home' %}">
+                        <i class="fa fa-chevron-left mr-1"></i>Back to Dashboard
+                    </a>
+                </div>
             </div>
-          </div>
         </div>
         <!-- End of header -->
         <!-- Card body -->
@@ -57,12 +59,12 @@
                             <td>{{ debtor.customer.location }}</td>
                             <td>{{ debtor.outstanding_balance }}</td>
                             <td>
-                              <div class="btn-group">
-                                  <!-- <a class="btn btn-primary mr-2 rounded" href="">Detail</a> -->
-                                  <a class="btn btn-primary mr-2 rounded" href="">Pay</a>
-                                  <!-- <a class="btn btn-danger mr-2 rounded" href="">Delete</a> -->
-                              </div>
-                          </td>
+                                <div class="btn-group">
+                                    <!-- <a class="btn btn-primary mr-2 rounded" href="">Detail</a> -->
+                                    <a class="btn btn-primary mr-2 rounded pay-btn" data-debtor-id="{{ debtor.id }}" href="#">Pay</a>
+                                    <!-- <a class="btn btn-danger mr-2 rounded" href="">Delete</a> -->
+                                </div>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -71,8 +73,77 @@
         </div>
         <!-- End of card body -->
     </div>
-  </div>
+    <!-- End of display debtors List -->
+</div>
 
-  <!-- End of main content -->
+<!-- Modal for Payment -->
+<div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">Enter Payment Amount</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="paymentAmount">Payment Amount</label>
+                        <input type="number" class="form-control" id="paymentAmount" name="paymentAmount" step="0.01" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="submitPayment">Submit Payment</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of modal for payment -->
+
+<!-- Javascript -->
+<script>
+    $(document).ready(function () {
+        // Handle Pay button click
+        $('.pay-btn').click(function () {
+            var debtorId = $(this).data('debtor-id');
+            $('#paymentModal').modal('show');
+            
+            $('#submitPayment').click(function () {
+                var paymentAmount = parseFloat($('#paymentAmount').val());
+                if (!isNaN(paymentAmount)) {
+                    // Get the CSRF token from the page's meta tag
+                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                    // Send payment data to the server via AJAX
+                    $.ajax({
+                        type: 'POST',
+                        url: '/sales/debtors/pay/',
+                        data: JSON.stringify({ debtorId: debtorId, paymentAmount: paymentAmount }),
+                        contentType: 'application/json',
+                        // Include csrfToken
+                        headers: {
+                        'X-CSRFToken': csrfToken
+                    },
+                        success: function (response) {
+                            // Display a success message or perform any other desired actions
+                            alert("Sale submitted successfully.");
+                            $('#paymentModal').modal('hide');
+                            // Reload the page to update the debtor list
+                            location.reload();
+                        },
+                        error: function (error) {
+                            // Handle the error case
+                            alert("Failed to submit the sale. Please try again.");
+                            console.error('Error:', error);
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+
 
 {% endblock %}

@@ -16,4 +16,7 @@ urlpatterns = [
     # Expenses
     path('expenses/', views.expense, name='expenses'), # enter expenses
 
+    # Pay Debt
+    path('debtors/pay/', views.pay_debt, name='pay_debtor'),
+
 ]
