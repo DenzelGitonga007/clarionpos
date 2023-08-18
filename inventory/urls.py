@@ -47,4 +47,7 @@ urlpatterns = [
     path('customer/<int:id>/detail/', views.customers_detail, name='customers_detail'), # read customers detail
     path('customer/<int:id>/update/', views.customers_update, name='customers_update'), # update customer
     path('customer/<int:id>/delete/', views.customers_delete, name='customers_delete'), # delete customer
+
+    # Debtors
+    path('debtors/', views.debtors_list, name="debtors_list"), # retrieve the debtors
 ]

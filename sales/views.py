@@ -105,10 +105,6 @@ def submit_sale(request):
             balance = Decimal(rendered_amount - total_amount)
             sale.balance = balance
 
-            # # Check if the customer has become a debtor
-            # if balance < 0 and not Debtor.objects.filter(customer=sale.customer).exists():
-            #     Debtor.objects.create(customer=sale.customer, outstanding_balance=balance)
-
             # Check if the customer has become a debtor
             debtor = Debtor.objects.filter(customer=sale.customer).first()
             if debtor:
@@ -134,7 +130,6 @@ def submit_sale(request):
 
     # Invalid request method
     return JsonResponse({'error': 'Invalid request method.'}, status=405)
-
 # End of sale
 
 # Present the sale page

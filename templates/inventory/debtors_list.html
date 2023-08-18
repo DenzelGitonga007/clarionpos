@@ -1,0 +1,78 @@
+{% extends 'common/base.html' %}
+{% block title %}Debtors | Clarion POS {% endblock %}
+{% block content %}
+  <!-- To display the messages -->
+  <!-- The messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+
+  <!-- To let the message disappear after a few seconds -->
+  <script>
+      setTimeout(function() {
+          $('.alert').fadeOut('slow');
+      }, 3000);
+  </script>
+  <!-- Main content -->
+  <div class="container">
+    <div class="card">
+        <!-- Header -->
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3>Debtors List</h3>
+            <div>
+              <a class="btn btn-secondary rounded mr-2" href="{% url 'accounts:home' %}">
+                <i class="fa fa-chevron-left mr-1"></i>Back to Dashboard
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- End of header -->
+        <!-- Card body -->
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone Number</th>
+                            <th>Location</th>
+                            <th>Balance</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for debtor in debtors %}
+                        <tr>
+                            <td>{{ debtor.customer.name }}</td>
+                            <td>{{ debtor.customer.phone_number }}</td>
+                            <td>{{ debtor.customer.location }}</td>
+                            <td>{{ debtor.outstanding_balance }}</td>
+                            <td>
+                              <div class="btn-group">
+                                  <!-- <a class="btn btn-primary mr-2 rounded" href="">Detail</a> -->
+                                  <a class="btn btn-primary mr-2 rounded" href="">Pay</a>
+                                  <!-- <a class="btn btn-danger mr-2 rounded" href="">Delete</a> -->
+                              </div>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- End of card body -->
+    </div>
+  </div>
+
+  <!-- End of main content -->
+
+{% endblock %}

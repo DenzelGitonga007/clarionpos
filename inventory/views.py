@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, Category, Store, Stock, Customer
+from sales.models import Debtor
 from .forms import ProductForm, CategoryForm, StoreForm, CustomerForm
 # To display message
 from django.contrib import messages
@@ -436,3 +437,14 @@ def customers_delete(request, id):
         'customer': customer,
         }
     return render(request, 'inventory/customers_delete.html', context)
+
+# Debtors
+def debtors_list(request):
+    # Retrieve customers with outstanding debt
+    debtors = Debtor.objects.filter(outstanding_balance__lt=0)
+    
+    context = {
+        'debtors': debtors
+    }
+    
+    return render(request, 'inventory/debtors_list.html', context)
