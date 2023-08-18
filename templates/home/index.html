@@ -51,9 +51,7 @@
             </div>
         </a>
       </div>
-    
       <!-- End of total sales -->
-
 
       <!-- Expenses -->
       <div class="col-lg-3 col-md-6 col-sm-6">
@@ -123,8 +121,32 @@
           </div>
         </a>
       </div>
-      
       <!-- End of Customers -->
+
+      <!-- Debts -->
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <a href="{% url 'inventory:customers_list' %}" style="text-decoration: none;">
+          <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+              <div class="card-icon">
+                <i class="fa fa-users"></i>
+              </div>
+              <p class="card-category"><strong>Debts</strong>
+                <br><small>All stores combined</small>
+              </p>
+              <!-- Counting effect -->
+              <h3 class="card-title" data-count="{{ total_debts }}">+ 0</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">update</i> Just Updated
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- End of debts -->
+
     </div>
   <!-- End of main content -->
 
@@ -495,14 +517,14 @@
     
     countElements.forEach(element => {
       const countTarget = parseInt(element.getAttribute("data-count"));
-      const step = Math.ceil(countTarget / 50); // Adjust the step value as needed
+      const step = Math.ceil(Math.abs(countTarget) / 50); // Using the absolute value for the step
       let currentValue = 0;
       
       const updateCount = () => {
-        if (currentValue < countTarget) {
+        if (currentValue < Math.abs(countTarget)) {
           currentValue += step;
-          element.innerHTML = currentValue;
-          setTimeout(updateCount, 25); // Adjust the timeout value for speed
+          element.innerHTML = (countTarget < 0 ? "-" : "") + currentValue; // Adding '-' sign for negative values
+          setTimeout(updateCount, 25);
         } else {
           element.innerHTML = countTarget;
         }
@@ -511,6 +533,7 @@
       updateCount();
     });
   });
+
 </script>
 
 

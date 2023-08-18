@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from accounts.models import User
 from inventory.models import *
 from django.http import JsonResponse
-from sales.models import Sale, SaleItem, Expense
+from sales.models import Sale, SaleItem, Expense, Debtor
 # For authentication
 from django.contrib.auth.decorators import login_required # only super admin can create the user-- has to log in
 from django.contrib.admin.views.decorators import staff_member_required # only super admin can create the user
@@ -36,13 +36,18 @@ def admin_dashboard(request):
     # Count the number of customers in the system
     total_customers = Customer.objects.count()
 
+    # Retrieve the debts
+    total_debts = Debtor.objects.aggregate(total_debts=Sum('outstanding_balance'))['total_debts']
+
+
     context = {
         'today': today,
         'total_products': total_products,
         'total_sales_today': total_sales_today,
         'total_expenses_today': total_expenses_today,
         'total_customers': total_customers,
-    }
+        'total_debts': total_debts,
+        }
     return render(request, 'home/index.html', context)
 
 # Select the sale store

@@ -12,28 +12,6 @@ from django.db.models import DateField, Sum
 from django.views.decorators.http import require_GET
 from decimal import Decimal
 
-
-# Pay debt
-@login_required(login_url='accounts:login')
-def pay_debt(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            debtor_id = data['debtorId']
-            payment_amount = data['paymentAmount']
-
-            debtor = get_object_or_404(Debtor, id=debtor_id)
-            debtor.outstanding_balance += payment_amount
-            debtor.save()
-            messages.success(request, "Debt paid")
-            return JsonResponse({'message': 'Payment successfully submitted.'})
-
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=400)
-
-    return JsonResponse({'error': 'Invalid request method.'}, status=405)
-
-
 # Make sale
 @login_required(login_url='accounts:login')
 @csrf_exempt
@@ -220,3 +198,25 @@ def expense(request):
     return render(request, 'sales/expenses.html', context)
 
 # End of expense entry
+
+# Pay debt
+@login_required(login_url='accounts:login')
+def pay_debt(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            debtor_id = data['debtorId']
+            payment_amount = data['paymentAmount']
+
+            debtor = get_object_or_404(Debtor, id=debtor_id)
+            debtor.outstanding_balance += payment_amount
+            debtor.save()
+            messages.success(request, "Debt paid")
+            return JsonResponse({'message': 'Payment successfully submitted.'})
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+
+    return JsonResponse({'error': 'Invalid request method.'}, status=405)
+
+# End of pay debt
