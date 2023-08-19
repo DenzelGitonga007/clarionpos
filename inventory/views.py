@@ -439,6 +439,7 @@ def customers_delete(request, id):
     return render(request, 'inventory/customers_delete.html', context)
 
 # Debtors
+@login_required(login_url='accounts:login')
 def debtors_list(request):
     # Retrieve customers with outstanding debt
     debtors = Debtor.objects.filter(outstanding_balance__lt=0)

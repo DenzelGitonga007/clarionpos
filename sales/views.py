@@ -209,8 +209,24 @@ def pay_debt(request):
             payment_amount = data['paymentAmount']
 
             debtor = get_object_or_404(Debtor, id=debtor_id)
+
+            # Create a sale instance for the debt payment
+            sale = Sale.objects.create(
+                sold_by=request.user,
+                total_amount=payment_amount,  # Payment amount is the total for this sale
+                rendered_amount=payment_amount,  # Entire payment is rendered
+                balance=0,  # No balance as it's fully paid
+                customer=debtor.customer,  # Associate with the debtor's customer
+                payment_method=None,  # You can set the payment method as needed
+            )
+
+            # Update the debtor's outstanding balance
             debtor.outstanding_balance += payment_amount
             debtor.save()
+
+            # Save the sale instance
+            sale.save()
+
             messages.success(request, "Debt paid")
             return JsonResponse({'message': 'Payment successfully submitted.'})
 
@@ -218,5 +234,6 @@ def pay_debt(request):
             return JsonResponse({'error': str(e)}, status=400)
 
     return JsonResponse({'error': 'Invalid request method.'}, status=405)
+
 
 # End of pay debt

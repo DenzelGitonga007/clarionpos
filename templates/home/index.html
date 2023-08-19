@@ -125,11 +125,11 @@
 
       <!-- Debts -->
       <div class="col-lg-3 col-md-6 col-sm-6">
-        <a href="{% url 'inventory:customers_list' %}" style="text-decoration: none;">
+        <a href="{% url 'inventory:debtors_list' %}" style="text-decoration: none;">
           <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
+            <div class="card-header card-header-warning card-header-icon">
               <div class="card-icon">
-                <i class="fa fa-users"></i>
+                <i class="material-icons" style="color: red;">monetization_on</i> <!-- Change the icon here -->
               </div>
               <p class="card-category"><strong>Debts</strong>
                 <br><small>All stores combined</small>
@@ -146,6 +146,8 @@
         </a>
       </div>
       <!-- End of debts -->
+
+
 
     </div>
   <!-- End of main content -->
@@ -504,12 +506,12 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
-  <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in assets/js/demos.js
-      md.initDashboardPageCharts();
-    });
-  </script>
+<script>
+  $(document).ready(function() {
+    // Javascript method's body can be found in assets/js/demos.js
+    md.initDashboardPageCharts();
+  });
+</script>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
