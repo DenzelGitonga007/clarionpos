@@ -98,24 +98,20 @@ def sales_list(request, id):
     start_date_str = request.GET.get('start_date')
     end_date_str = request.GET.get('end_date')
 
-    sales = Sale.objects.filter(sold_by__store=store)
+    # Define default values for start_date and end_date
+    start_date = start_of_day.date()  # Default to the start of the current day
+    end_date = end_of_day.date()  # Default to the end of the current day
 
     if start_date_str and end_date_str:
         # Parse start_date and end_date if provided
         start_date = timezone.datetime.strptime(start_date_str, '%Y-%m-%d').date()
         end_date = timezone.datetime.strptime(end_date_str, '%Y-%m-%d').date() + timezone.timedelta(days=1)
 
-        # Filter sales for the store within the selected date range
-        sales = Sale.objects.filter(sold_by__store=store, date__gte=start_date, date__lt=end_date)
+    # Filter sales for the store within the selected date range
+    sales = Sale.objects.filter(sold_by__store=store, date__gte=start_date, date__lt=end_date)
 
-        # Obtain total sales for the filtered sales
-        total_sale = sales.aggregate(total_amount=Sum('total_amount'))['total_amount']
-    else:
-        # Filter sales for the store and the current day
-        sales = Sale.objects.filter(sold_by__store=store, date__gte=start_of_day, date__lt=end_of_day)
-        
-        # Obtain total sales for the store
-        total_sale = sales.aggregate(total_amount=Sum('total_amount'))['total_amount']
+    # Obtain total sales for the filtered sales
+    total_sale = sales.aggregate(total_amount=Sum('total_amount'))['total_amount']
 
     # Calculate total amounts for each payment method
     cash_total = sales.filter(payment_method__name='CASH').aggregate(cash_total=Sum('total_amount'))['cash_total'] or 0
@@ -123,18 +119,12 @@ def sales_list(request, id):
     bank_total = sales.filter(payment_method__name='BANK').aggregate(bank_total=Sum('total_amount'))['bank_total'] or 0
 
     # Retrieve expenses for the store based on selected dates
-    if start_date_str and end_date_str:
-        expenses = Expense.objects.filter(store=store, date__gte=start_date, date__lt=end_date)
-    else:
-        expenses = Expense.objects.filter(store=store, date__gte=start_of_day, date__lt=end_of_day)
-    
+    expenses = Expense.objects.filter(store=store, date__gte=start_date, date__lt=end_date)
     total_expenses = expenses.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
 
     # Retrieve sales from paid debts within the selected date range
     paid_debt_sales = Sale.objects.filter(payment_method=None, date__gte=start_date, date__lt=end_date, sold_by__store=store)
     total_paid_debts_amount = paid_debt_sales.aggregate(total_amount=Sum('total_amount'))['total_amount'] or 0
-
-    
 
     context = {
         'today': today,
@@ -150,7 +140,6 @@ def sales_list(request, id):
         'total_paid_debts_amount': total_paid_debts_amount,
     }
     return render(request, 'admin/sales/sales_list.html', context)
-
 
 
 
