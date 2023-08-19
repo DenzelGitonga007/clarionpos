@@ -7,7 +7,7 @@ from sales.models import Sale, SaleItem, Expense, Debtor
 from django.contrib.auth.decorators import login_required # only super admin can create the user-- has to log in
 from django.contrib.admin.views.decorators import staff_member_required # only super admin can create the user
 import json
-from django.db.models import Case, When, Sum, Value, F, DecimalField
+from django.db.models import Case, When, Sum, Value, F, DecimalField, Q
 from datetime import datetime
 from django.utils import timezone
 from django.db.models.functions import TruncDate
@@ -39,6 +39,10 @@ def admin_dashboard(request):
     # Retrieve the debts
     total_debts = Debtor.objects.aggregate(total_debts=Sum('outstanding_balance'))['total_debts']
 
+    # Retrieve the amounts paid as debt payments
+    total_debt_payments = Sale.objects.filter(Q(payment_method__isnull=True) & ~Q(balance=F('total_amount')) & Q(date__gte=start_of_day, date__lt=end_of_day)).aggregate(total_debt_payments=Sum('total_amount'))['total_debt_payments']
+
+
 
     context = {
         'today': today,
@@ -47,6 +51,7 @@ def admin_dashboard(request):
         'total_expenses_today': total_expenses_today,
         'total_customers': total_customers,
         'total_debts': total_debts,
+        'total_debt_payment': total_debt_payments,
         }
     return render(request, 'home/index.html', context)
 
@@ -125,6 +130,11 @@ def sales_list(request, id):
     
     total_expenses = expenses.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
 
+    # Retrieve sales from paid debts within the selected date range
+    paid_debt_sales = Sale.objects.filter(payment_method=None, date__gte=start_date, date__lt=end_date, sold_by__store=store)
+    total_paid_debts_amount = paid_debt_sales.aggregate(total_amount=Sum('total_amount'))['total_amount'] or 0
+
+    
 
     context = {
         'today': today,
@@ -136,10 +146,10 @@ def sales_list(request, id):
         'cash_total': cash_total,
         'till_total': till_total,
         'bank_total': bank_total,
-        'total_expenses' : total_expenses,
+        'total_expenses': total_expenses,
+        'total_paid_debts_amount': total_paid_debts_amount,
     }
     return render(request, 'admin/sales/sales_list.html', context)
-
 
 
 

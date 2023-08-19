@@ -144,15 +144,18 @@
     </div>
     <!-- Expenses -->
 
-    <!-- Debts -->
-    <!-- <div class="col-lg-3 col-md-6 col-sm-6">
+    <!-- Paid Debts -->
+    <div class="col-lg-3 col-md-6 col-sm-6">
       <div class="card card-stats">
-        <div class="card-header card-header-danger card-header-icon">
+        <div class="card-header card-header-icon card-header-success">
           <div class="card-icon">
-            <i class="material-icons">balance</i>
+            <i class="material-icons" >monetization_on</i> <!-- Change the icon here -->
           </div>
-          <p class="card-category"><strong>Debtors</strong></p>
-          <h3 class="card-title">75</h3>
+          <p class="card-category"><strong>Debts</strong>
+            <br><small>All stores combined</small>
+          </p>
+          <!-- Counting effect -->
+          <h3 class="card-title" data-count="{{ total_paid_debts_amount }}">+ 0</h3>
         </div>
         <div class="card-footer">
           <div class="stats">
@@ -160,8 +163,8 @@
           </div>
         </div>
       </div>
-    </div> -->
-    <!-- End of Debts -->
+    </div>
+    <!-- End of Paid Debts -->
     
   </div>
   <!-- End of card -->
@@ -181,7 +184,7 @@
               <div class="form-row align-items-center">
                 <div class="col-auto">
                     <label class="sr-only" for="startDate">Start Date</label>
-                    <input type="date" name="start_date" class="form-control mb-2"required id="startDate" placeholder="Start Date">
+                    <input type="date" name="start_date" class="form-control mb-2" required id="startDate" placeholder="Start Date">
                 </div>
                 <div class="col-auto">
                     <label class="sr-only" for="endDate">End Date</label>
