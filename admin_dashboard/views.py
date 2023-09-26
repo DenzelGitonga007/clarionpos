@@ -117,6 +117,7 @@ def sales_list(request, id):
     cash_total = sales.filter(payment_method__name='CASH').aggregate(cash_total=Sum('total_amount'))['cash_total'] or 0
     till_total = sales.filter(payment_method__name='TILL').aggregate(till_total=Sum('total_amount'))['till_total'] or 0
     bank_total = sales.filter(payment_method__name='BANK').aggregate(bank_total=Sum('total_amount'))['bank_total'] or 0
+    mpesa_total = sales.filter(payment_method__name='MPESA').aggregate(mpesa_total=Sum('total_amount'))['mpesa_total'] or 0
 
     # Retrieve expenses for the store based on selected dates
     expenses = Expense.objects.filter(store=store, date__gte=start_date, date__lt=end_date)
@@ -136,6 +137,7 @@ def sales_list(request, id):
         'cash_total': cash_total,
         'till_total': till_total,
         'bank_total': bank_total,
+        'mpesa_total': mpesa_total,
         'total_expenses': total_expenses,
         'total_paid_debts_amount': total_paid_debts_amount,
     }
